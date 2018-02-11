@@ -13,4 +13,10 @@ export {
     euclidean,
     manhattan,
     euclideanSquare,
-}
+};
+
+export default {
+    euclidean,
+    manhattan,
+    euclideanSquare,
+};
