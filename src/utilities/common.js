@@ -6,9 +6,12 @@ const randomInt = (min = 0, max = 1) => Math.floor(Math.random() * (max - min + 
 
 const shuffle = arr => arr.slice(0).sort(() => Math.ceil(Math.random() - 0.5));
 
+const toJson = o => JSON.stringify(o, null, 2);
+
 export {
     sum,
     isString,
     randomInt,
-    shuffle
+    shuffle,
+    toJson
 }
