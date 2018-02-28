@@ -8,10 +8,21 @@ const shuffle = arr => arr.slice(0).sort(() => Math.ceil(Math.random() - 0.5));
 
 const toJson = o => JSON.stringify(o, null, 2);
 
+const flat = data => data.reduce((prev, cur) => {
+  const needMore = [].concat(cur).some(Array.isArray);
+  return prev.concat(needMore ? flat(cur) : cur);
+},[])
+
+
+let id = 0;
+const newId = (prefix = '') => `${prefix}-${id++}`;
+
 export {
     sum,
     isString,
     randomInt,
     shuffle,
-    toJson
+    toJson,
+    flat,
+    newId
 }

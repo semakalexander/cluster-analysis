@@ -1,28 +1,43 @@
-.App {
-  text-align: center;
+@import "../node_modules/react-vis/dist/style.css";
+
+body {
+  background-color: #323232;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+.plot-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
+.plot {
+  background-color: #323232;
+  color: #fff;
+  margin: 6px 0;
 }
 
-.App-title {
-  font-size: 1.5em;
+.btn {
+  border: none;
+  background: #fff;
+  color: #000;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 3px;
 }
 
-.App-intro {
-  font-size: large;
+.btn-success {
+  color: #fff;
+  background-color: #008080;
+  box-shadow: -1px 2px #003030;
 }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.btn-success:hover {
+  background-color: #206060;
+}
+
+.btn-success:active {
+  background-color: #006060;
+  box-shadow: 0 1px #003030;
+  transform: translate(-1px, 1px);
 }

@@ -1,11 +1,11 @@
 import { assert } from 'chai';
 
-import { sumt } from './utilities/common';
+import { sum } from './utilities/common';
 import { euclidean, euclideanSquare, manhattan } from './utilities/distances';
 import kmeans, { format } from './utilities/kmeans';
 
 describe('common utilities', () => {
-    it('add two undetermined numbers', () => {
+    it('add undetermined numbers', () => {
         const numbers = [1,2,3,4];
 
         assert.equal(sum(...numbers), 10)
@@ -46,5 +46,6 @@ describe('methods', () => {
     ];
 
     kmeans(vectors, {}, r => console.log(format(r)), 1)
+    console.log(kmeans(vectors));
   });
 });

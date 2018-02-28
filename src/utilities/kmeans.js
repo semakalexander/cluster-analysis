@@ -69,7 +69,7 @@ const kmeans = (vectors, options = {}, snapshotCb, snapshotPeriod) => {
 
           newCentroid[g] = sum / assigned.length;
 
-          if (newCentroid[g] != centroid[g]) {
+          if (newCentroid[g] !== centroid[g]) {
             movement = true;
           }
         }
