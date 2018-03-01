@@ -26,18 +26,66 @@ body {
   border-radius: 3px;
 }
 
+.btn-control {
+  padding: 7px 12px;
+  text-align: center;
+  border-radius: 0;
+}
+
+.btn-info {
+  color: #222;
+  background-color: #f7e161;
+}
+
+.btn-info:hover {
+  background-color: #f9df48;
+}
+
+.btn-info:focus{
+  border: 1px solid #5d4343;
+}
+
+.btn-danger {
+  color: #fff;
+  background-color: #ff4136;
+  background-color: #ce2339;
+}
+
+.btn-danger:hover {
+  background-color: #ff3836;
+}
+
 .btn-success {
   color: #fff;
-  background-color: #008080;
-  box-shadow: -1px 2px #003030;
+  background-color: #2ecc40;
+  background-color: #01FF70;
 }
 
 .btn-success:hover {
-  background-color: #206060;
+  background-color: #2ecc40;
 }
 
-.btn-success:active {
-  background-color: #006060;
-  box-shadow: 0 1px #003030;
-  transform: translate(-1px, 1px);
+.btn:active {
+  transform: translateY(1px;);
+}
+
+.number-inputs {
+  display: flex;
+  margin-top: 6px;
+}
+
+.number-input {
+  display: flex;
+  margin-left: 4px;
+}
+
+.number-input input {
+  width: 70px;
+  text-align: center;
+}
+
+.number-input-wrapper {
+  text-align: center;
+  color: #eee;
+  font-size: 16px;
 }
