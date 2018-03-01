@@ -83,7 +83,7 @@ const kmeans = (vectors, options = {}, snapshotCb, snapshotPeriod) => {
       }
     }
 
-    return clusters;
+    return { clusters, centroids, k };
 };
 
 const format = clusters => toJson(clusters.map(c => c.map(v => `(${v.join(', ')})`)));

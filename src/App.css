@@ -1,7 +1,7 @@
 @import "../node_modules/react-vis/dist/style.css";
 
 body {
-  background-color: #323232;
+  background-color: #151515;
 }
 
 .plot-wrapper {
@@ -12,7 +12,7 @@ body {
 }
 
 .plot {
-  background-color: #323232;
+  background-color: #181818;
   color: #fff;
   margin: 6px 0;
 }

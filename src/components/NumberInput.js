@@ -8,7 +8,7 @@ const NumberInput = ({ value, label = '', onChange }) => {
         <span>{label}</span>
         <div className="number-input">
           <div className="btn btn-control btn-danger" onClick={() => onChange(value - 1)}>-</div>
-          <input type="text" value={value} />
+          <input type="text" value={value} onChange={e => onChange(+e.target.value)} />
           <div className="btn btn-control btn-success" onClick={() => onChange(value + 1)}>+</div>
         </div>
       </label>

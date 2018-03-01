@@ -3,11 +3,12 @@ import { arrayOf, shape, number} from 'prop-types';
 
 import {
   XYPlot,
+  FlexibleXYPlot,
   XAxis,
   YAxis,
   VerticalGridLines,
   HorizontalGridLines,
-  MarkSeries,
+  MarkSeries
 } from 'react-vis';
 
 import kmeans, { format } from '../utilities/kmeans';
@@ -17,16 +18,26 @@ import { mainColors, allColors } from '../helpers/colors';
 
 import NumberInput from './NumberInput';
 
+const gridsStyle = {
+  opacity: 0.3
+};
+
+const axiesStyle = {
+  opacity: 0.7,
+  fill: '#eee'
+};
+
 class Kmeans extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       data: [],
+      centroidsData: [],
       min: 3,
       max: 200,
       width: 1024,
-      height: 512
+      height: 542
     };
 
     this.update = this.update.bind(this);
@@ -41,7 +52,7 @@ class Kmeans extends Component {
 
     const randomPoints = Array.from(Array(randomInt(min, max)).keys()).map(v => [randomInt(-1000, 1000), randomInt(-1000, 1000)]);
 
-    const clusters = kmeans(randomPoints);
+    const { clusters, centroids } = kmeans(randomPoints);
 
     const colors = clusters.length > mainColors.length ? allColors : mainColors;
 
@@ -54,17 +65,14 @@ class Kmeans extends Component {
       ));
 
     const data = flat(serializedData);
+    const centroidsData = centroids.map((c, i) => ({x: c[0], y: c[1], size:8, color: colors[i]}));
 
-    this.setState({ data });
+    this.setState({ data, centroidsData });
   }
 
-  handleMin = min =>
-  this.setState({ min });
-    // this.setState(({ max }) => ({ min: value >= max ? max : value }));
+  handleMin = v => this.setState({ min: v > 0 ? v : 0 });
 
-  handleMax = max =>
-  this.setState({ max });
-    // this.setState(({ min }) => ({ max: value <= min ? min : value }));
+  handleMax = max => this.setState({ max: max > 0 ? max : 0 });
 
   render() {
     const {
@@ -73,6 +81,7 @@ class Kmeans extends Component {
       handleMax,
       state: {
         data,
+        centroidsData,
         min,
         max,
         width,
@@ -82,12 +91,18 @@ class Kmeans extends Component {
 
     return (
       <div className="plot-wrapper">
-        <XYPlot className="plot"
-         width={width}
-         height={height}
+        <FlexibleXYPlot
+          className="plot"
+          height={height}
         >
-         <XAxis />
-         <YAxis />
+         <XAxis style={axiesStyle} />
+         <XAxis orientation="top" style={axiesStyle} />
+
+         <YAxis style={axiesStyle} />
+         <YAxis orientation="right" style={axiesStyle} />
+
+         <VerticalGridLines style={gridsStyle} />
+         <HorizontalGridLines style={gridsStyle} />
 
          <MarkSeries
           colorType="literal"
@@ -95,8 +110,13 @@ class Kmeans extends Component {
           animation="gentle"
           size={4}
          />
-       </XYPlot>
 
+         <MarkSeries
+          colorType="literal"
+          data={centroidsData}
+          animation="gentle"
+         />
+       </FlexibleXYPlot>
        <button
           className="btn btn-info"
           onClick={update}
