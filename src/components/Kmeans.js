@@ -12,6 +12,8 @@ import {
 } from 'react-vis';
 
 import kmeans, { format } from '../utilities/kmeans';
+import hierarchical from '../utilities/hierarchical'
+
 import { randomInt, flat, newId } from '../utilities/common';
 
 import { mainColors, allColors } from '../helpers/colors';
@@ -34,7 +36,7 @@ class Kmeans extends Component {
     this.state = {
       data: [],
       centroidsData: [],
-      min: 3,
+      min: 30,
       max: 200,
       width: 1024,
       height: 542
@@ -54,6 +56,7 @@ class Kmeans extends Component {
 
     const { clusters, centroids } = kmeans(randomPoints);
 
+    console.log(hierarchical(randomPoints));
     const colors = clusters.length > mainColors.length ? allColors : mainColors;
 
     const serializedData = clusters.map((c, i) =>
