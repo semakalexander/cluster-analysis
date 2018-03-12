@@ -39,7 +39,8 @@ class Kmeans extends Component {
       min: 30,
       max: 200,
       width: 1024,
-      height: 542
+      height: 542,
+      clustersCount: 3
     };
 
     this.update = this.update.bind(this);
@@ -47,16 +48,20 @@ class Kmeans extends Component {
 
   componentDidMount() { this.update(); }
 
-  update() {
+  update(shouldRandom = true) {
     const {
-      min, max
+      min, max, clustersCount, data : oldPoints
     } = this.state;
 
-    const randomPoints = Array.from(Array(randomInt(min, max)).keys()).map(v => [randomInt(-1000, 1000), randomInt(-1000, 1000)]);
+    const points =
+      shouldRandom ?
+      Array.from(Array(randomInt(min, max)).keys()).map(v => [randomInt(-1000, 1000), randomInt(-1000, 1000)]) :
+      oldPoints.map(p => [p.x, p.y])
 
-    const { clusters, centroids } = kmeans(randomPoints);
 
-    console.log(hierarchical(randomPoints));
+    const { clusters, centroids } = kmeans(points, { k: clustersCount });
+
+    // console.log(hierarchical(randomPoints));
     const colors = clusters.length > mainColors.length ? allColors : mainColors;
 
     const serializedData = clusters.map((c, i) =>
@@ -68,27 +73,34 @@ class Kmeans extends Component {
       ));
 
     const data = flat(serializedData);
-    const centroidsData = centroids.map((c, i) => ({x: c[0], y: c[1], size:8, color: colors[i]}));
+    const centroidsData = centroids.map((c, i) => ({x: c[0], y: c[1], color: colors[i]}));
 
     this.setState({ data, centroidsData });
   }
 
   handleMin = v => this.setState({ min: v > 0 ? v : 0 });
 
-  handleMax = max => this.setState({ max: max > 0 ? max : 0 });
+  handleMax = v => this.setState({ max: v > 0 ? v : 0 });
+
+  handleClustersCount = v => this.setState(
+    () => ({ clustersCount: v > 2 ? v : 2 }),
+    () => this.update(false)
+  );
 
   render() {
     const {
       update,
       handleMin,
       handleMax,
+      handleClustersCount,
       state: {
         data,
         centroidsData,
         min,
         max,
         width,
-        height
+        height,
+        clustersCount
       }
     } = this;
 
@@ -111,13 +123,14 @@ class Kmeans extends Component {
           colorType="literal"
           data={data}
           animation="gentle"
-          size={4}
+          size={3}
          />
 
          <MarkSeries
           colorType="literal"
           data={centroidsData}
           animation="gentle"
+          size={6}
          />
        </FlexibleXYPlot>
        <button
@@ -129,6 +142,11 @@ class Kmeans extends Component {
        <div className="number-inputs">
         <NumberInput value={min} label="min" onChange={handleMin} />
         <NumberInput value={max} label="max" onChange={handleMax} />
+        <NumberInput
+         value={clustersCount}
+         label="count of clusters"
+         onChange={handleClustersCount}
+        />
        </div>
      </div>
     );

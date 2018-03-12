@@ -9,13 +9,18 @@ class Cluster {
 }
 
 const convertToObjects = items =>
-    items.map(values => (new Cluster(values)));
+    items.map(values => [values]);
 
+
+let c = 0;
 
 const hierarchical = (items, metric = euclidean) => {
   const splitOnClusters = (clusters, newClusters = []) => {
-    if(!clusters.length) return newClusters;
-
+    if (clusters.length < 2) {
+      newClusters.push([...clusters]);
+      // if (newClusters.length > 2) return splitOnClusters(newClusters)
+      return newClusters;
+    }
     let data = [...clusters];
 
     for (let i = 0; i < data.length; i++) {
@@ -24,10 +29,13 @@ const hierarchical = (items, metric = euclidean) => {
 
       for (let j = 0; j < data.length; j++) {
         if(i === j) continue;
-        const distance = metric(data[i], data[j]);
-        if (distance < min) {
-          min = distance;
-          minIndexes = [i, j];
+
+        for(let k = 0; k < data[i].length; k++) {
+          const distance = metric(data[i][k], data[j][k]);
+          if (distance < min) {
+            min = distance;
+            minIndexes = [i, j];
+          }
         }
       }
 
