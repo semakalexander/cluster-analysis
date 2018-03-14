@@ -34,8 +34,8 @@ class Kmeans extends Component {
     this.state = {
       data: [],
       centroidsData: [],
-      min: 30,
-      max: 200,
+      min: 2000,
+      max: 4000,
       width: 1024,
       height: 542,
       clustersCount: 3
