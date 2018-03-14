@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { arrayOf, shape, number} from 'prop-types';
 
 import {
-  XYPlot,
   FlexibleXYPlot,
   XAxis,
   YAxis,
@@ -11,10 +9,10 @@ import {
   MarkSeries
 } from 'react-vis';
 
-import kmeans, { format } from '../utilities/kmeans';
+import kmeans from '../utilities/kmeans';
 import hierarchical from '../utilities/hierarchical'
 
-import { randomInt, flat, newId } from '../utilities/common';
+import { randomInt, flat, shuffle } from '../utilities/common';
 
 import { mainColors, allColors } from '../helpers/colors';
 
@@ -60,9 +58,17 @@ class Kmeans extends Component {
 
 
     const { clusters, centroids } = kmeans(points, { k: clustersCount });
+    // clusters = hierarchical(points);
 
-    // console.log(hierarchical(randomPoints));
-    const colors = clusters.length > mainColors.length ? allColors : mainColors;
+    const colors = clusters.length > mainColors.length ? allColors : shuffle(mainColors);
+
+    // const serializedData = clusters
+    //   .map((c, i) =>
+    //     c.map(el =>
+    //       el.map(p => ({ x: p[0], y: p[1], color: colors[i]}))
+    //     )
+    //   );
+
 
     const serializedData = clusters.map((c, i) =>
         c.map(p => ({
@@ -73,6 +79,8 @@ class Kmeans extends Component {
       ));
 
     const data = flat(serializedData);
+    // const centroidsData = data.filter((el, i) => i%2)
+
     const centroidsData = centroids.map((c, i) => ({x: c[0], y: c[1], color: colors[i]}));
 
     this.setState({ data, centroidsData });
@@ -98,7 +106,6 @@ class Kmeans extends Component {
         centroidsData,
         min,
         max,
-        width,
         height,
         clustersCount
       }
@@ -122,7 +129,6 @@ class Kmeans extends Component {
          <MarkSeries
           colorType="literal"
           data={data}
-          animation="gentle"
           size={3}
          />
 
