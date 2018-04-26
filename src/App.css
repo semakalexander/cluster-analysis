@@ -18,7 +18,7 @@ body {
 }
 
 .btn {
-  border: none;
+  border: 1px transparent;
   background: #fff;
   color: #000;
   cursor: pointer;
@@ -26,10 +26,27 @@ body {
   border-radius: 3px;
 }
 
+.btn-group .btn{
+  margin-right: 10px;
+}
+
 .btn-control {
   padding: 7px 12px;
   text-align: center;
   border-radius: 0;
+}
+
+.btn-info2 {
+    color: #222;
+    background-color: #0082c8;
+}
+
+.btn-info2:hover {
+    background-color: #0077b9;
+}
+
+.btn-info2:focus{
+    border: 1px solid #5d4343;
 }
 
 .btn-info {
@@ -47,7 +64,6 @@ body {
 
 .btn-danger {
   color: #fff;
-  background-color: #ff4136;
   background-color: #ce2339;
 }
 
@@ -57,7 +73,6 @@ body {
 
 .btn-success {
   color: #fff;
-  background-color: #2ecc40;
   background-color: #01FF70;
 }
 
@@ -66,7 +81,7 @@ body {
 }
 
 .btn:active {
-  transform: translateY(1px;);
+  transform: translateY(1px);
 }
 
 .number-inputs {
@@ -88,4 +103,15 @@ body {
   text-align: center;
   color: #eee;
   font-size: 16px;
+}
+
+.info-text {
+    color: white;
+}
+
+.points-counter {
+    color: white;
+    position: absolute;
+    left: 60px;
+    bottom: 60px;
 }
