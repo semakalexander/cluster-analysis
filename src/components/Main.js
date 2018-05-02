@@ -115,7 +115,7 @@ class Main extends Component {
       isHShowing: true,
       hIndex: 0,
       hData
-    }, this.update)
+    }, this.hNextStep)
   };
 
   hNextStep = () => {
