@@ -27,22 +27,21 @@ const axiesStyle = {
   fill: '#eee'
 };
 
-const generateRandomPoints = (min, max) =>
-  Array.from(new Array(randomInt(min, max)).keys()).map(v => [
-    randomInt(-1000, 1000),
-    randomInt(-1000, 1000)
-  ]);
 
 class Main extends Component {
   constructor(props) {
     super(props);
 
+    const {
+      data = [],
+      centroids,
+      clustersCount = 3
+    } = props;
+
     this.state = {
-      data: [],
+      data,
       centroidsData: [],
-      clustersCount: 3,
-      min: 9,
-      max: 9,
+      clustersCount,
       width: 1024,
       height: 542,
       hOriginalData: [],
@@ -56,19 +55,25 @@ class Main extends Component {
     this.cUpdate();
   }
 
-  cUpdate = (shouldRandom = true) => {
-    const {
-      min,
-      max,
-      clustersCount,
-      data: oldPoints
-    } = this.state;
+  componentWillReceiveProps(nextProps) {
+    this.cUpdate(nextProps.data);
+  }
 
-    const points = shouldRandom ?
-      generateRandomPoints(min, max) :
-      oldPoints.map(p => [p.x, p.y]);
+  cUpdate = (updatedData) => {
+    let {
+      props: {
+        data,
+      },
+      state: {
+        clustersCount
+      }
+    } = this;
 
-    const { clusters, centroids } = kmeans(points, { k: clustersCount });
+    data = updatedData || data;
+
+    console.log(...data)
+
+    const { clusters, centroids } = kmeans(data, { k: clustersCount });
 
     const colors =
       clusters.length > mainColors.length ?
@@ -83,7 +88,7 @@ class Main extends Component {
       }))
     );
 
-    const data = flat(serializedData);
+    const newData = flat(serializedData);
 
     const centroidsData = centroids.map((c, i) => ({
       x: c[0],
@@ -91,9 +96,17 @@ class Main extends Component {
       color: colors[i]
     }));
 
-    this.setState({ data, centroidsData, isHShowing: false });
+    console.log('before', this.state)
+    this.setState(() => ({
+      data: newData,
+      centroidsData,
+      isHShowing: false
+    }), () =>     console.log('after',this.state));
   };
 
+
+  // todo separate hierarchical logic
+  // todo added features to kmeans (centroids etc)
   hUpdate = () => {
     const {
       data: oldPoints,
@@ -134,14 +147,10 @@ class Main extends Component {
     });
   };
 
-  handleMin = v => this.setState({ min: v > 0 ? v : 0 });
-
-  handleMax = v => this.setState({ max: v > 0 ? v : 0 });
-
   handleClustersCount = v =>
     this.setState(
-      () => ({ clustersCount: v > 2 ? v : 2 }),
-      () => this.cUpdate(false)
+      () => ({ clustersCount: v < 1 ? 1 : v }),
+      () => this.cUpdate()
     );
 
   render() {
@@ -149,14 +158,10 @@ class Main extends Component {
       hNextStep,
       cUpdate,
       hUpdate,
-      handleMin,
-      handleMax,
       handleClustersCount,
       state: {
         data,
         centroidsData,
-        min,
-        max,
         height,
         clustersCount,
         isHShowing,
@@ -187,9 +192,6 @@ class Main extends Component {
           />
         </FlexibleXYPlot>
         <div className="btn-group">
-          <button className="btn btn-info" onClick={cUpdate}>
-            Update data
-          </button>
           <button className="btn btn-info2" onClick={hUpdate}>
             Hierarchical
           </button>
@@ -211,11 +213,10 @@ class Main extends Component {
         {
           !isHShowing ? (
             <div className="number-inputs">
-              <NumberInput value={min} label="min" onChange={handleMin} />
-              <NumberInput value={max} label="max" onChange={handleMax} />
               <NumberInput
                 value={clustersCount}
                 label="count of clusters"
+                min={1}
                 onChange={handleClustersCount}
               />
             </div>

@@ -140,7 +140,7 @@ class Sandbox extends Component {
           columns={columns}
           rowGetter={rowGetter}
           rowsCount={rows.length}
-          minHeight={500}
+          minHeight={200}
           onGridRowsUpdated={updateRows}
           enableCellSelect
         />
