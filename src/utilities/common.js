@@ -13,7 +13,7 @@ const toJson = o => JSON.stringify(o, null, 2);
 const flat = data => data.reduce((prev, cur) => {
   const needMore = [].concat(cur).some(Array.isArray);
   return prev.concat(needMore ? flat(cur) : cur);
-},[])
+},[]);
 
 
 let id = 0;
