@@ -18,9 +18,9 @@ class Sandbox extends Component {
           name: i,
           editable: true
         })) : [] */,
-      rows: [[0, 0]],
+      rows: [[0, 0], [0, 1], [1,1]],
       dimension: 2,
-      countOfRows: 1
+      countOfRows: 3
     };
 
   }
@@ -132,7 +132,7 @@ class Sandbox extends Component {
         <input
           type="number"
           value={countOfRows}
-          min={1}
+          min={2}
           max={1000000}
           onChange={onCountOfRowsChange}
         />

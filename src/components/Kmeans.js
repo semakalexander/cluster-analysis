@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import agglo from 'agglo';
 
 import {
   FlexibleXYPlot,
@@ -12,7 +11,11 @@ import {
 
 import kmeans from '../utilities/kmeans';
 
-import { randomInt, flat, shuffle } from '../utilities/common';
+import {
+  flat,
+  shuffle,
+  serialize,
+} from '../utilities/common';
 
 import { mainColors, allColors } from '../helpers/colors';
 
@@ -28,7 +31,7 @@ const axiesStyle = {
 };
 
 
-class Main extends Component {
+class Kmeans extends Component {
   constructor(props) {
     super(props);
 
@@ -39,7 +42,7 @@ class Main extends Component {
     } = props;
 
     this.state = {
-      data,
+      data: serialize(data),
       centroidsData: [],
       clustersCount,
       width: 1024,
@@ -71,8 +74,6 @@ class Main extends Component {
 
     data = updatedData || data;
 
-    console.log(...data)
-
     const { clusters, centroids } = kmeans(data, { k: clustersCount });
 
     const colors =
@@ -96,56 +97,15 @@ class Main extends Component {
       color: colors[i]
     }));
 
-    console.log('before', this.state)
     this.setState(() => ({
       data: newData,
       centroidsData,
       isHShowing: false
-    }), () =>     console.log('after',this.state));
+    }));
   };
 
 
-  // todo separate hierarchical logic
   // todo added features to kmeans (centroids etc)
-  hUpdate = () => {
-    const {
-      data: oldPoints,
-    } = this.state;
-
-    const points = oldPoints.map(({ x, y }) => [x, y]);
-
-    const h = agglo(points);
-    const colors = points.length > mainColors.length ? allColors : shuffle(mainColors);
-
-    const hData = h.map(o => flat(o.clusters.map((c, i) => c.map(p => ({
-      color: colors[i],
-      x: p[0],
-      y: p[1]
-    })))));
-
-    this.setState({
-      hOriginalData: h.map(({ clusters }) => clusters),
-      isHShowing: true,
-      hIndex: 0,
-      hData
-    }, this.hNextStep)
-  };
-
-  hNextStep = () => {
-    const {
-      hIndex,
-      hData,
-    } = this.state;
-
-    const isHShowing = hIndex + 1 < hData.length;
-
-    this.setState({
-      data: hData[hIndex],
-      centroidsData: [],
-      hIndex: isHShowing ? hIndex + 1 : 0,
-      isHShowing
-    });
-  };
 
   handleClustersCount = v =>
     this.setState(
@@ -155,18 +115,12 @@ class Main extends Component {
 
   render() {
     const {
-      hNextStep,
-      cUpdate,
-      hUpdate,
       handleClustersCount,
       state: {
         data,
         centroidsData,
         height,
         clustersCount,
-        isHShowing,
-        hOriginalData,
-        hIndex
       }
     } = this;
 
@@ -182,46 +136,23 @@ class Main extends Component {
           <VerticalGridLines style={gridsStyle} />
           <HorizontalGridLines style={gridsStyle} />
 
-          <MarkSeries colorType="literal" data={data} size={isHShowing ? 7 : 3} />
+          <MarkSeries colorType="literal" data={data} size={3} />
 
           <MarkSeries
             colorType="literal"
             data={centroidsData}
             animation="gentle"
-            size={6}
+            size={5}
           />
         </FlexibleXYPlot>
-        <div className="btn-group">
-          <button className="btn btn-info2" onClick={hUpdate}>
-            Hierarchical
-          </button>
-          {
-            isHShowing ? (
-              <button className="btn btn-info2" onClick={hNextStep}>
-                Next Step
-              </button>
-            ) : null
-          }
+        <div className="number-inputs">
+          <NumberInput
+            value={clustersCount}
+            label="count of clusters"
+            min={1}
+            onChange={handleClustersCount}
+          />
         </div>
-        {
-          isHShowing ? (
-            <p className="info-text">
-              Count of clusters: {hOriginalData[hIndex].length + 1}
-            </p>
-          ) : null
-        }
-        {
-          !isHShowing ? (
-            <div className="number-inputs">
-              <NumberInput
-                value={clustersCount}
-                label="count of clusters"
-                min={1}
-                onChange={handleClustersCount}
-              />
-            </div>
-          ) : null
-        }
         <span className="points-counter">
           {data.length} points
         </span>
@@ -230,4 +161,4 @@ class Main extends Component {
   }
 }
 
-export default Main;
+export default Kmeans;

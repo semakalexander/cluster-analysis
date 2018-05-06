@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
-import Main from './components/Main';
+import Kmeans from './components/Kmeans';
+import Hierarchical from './components/Hierarchical';
 import Sandbox from './components/Sandbox';
 import { randomInt } from './utilities/common';
 
@@ -8,7 +9,7 @@ const testData = () => {
   const data = [];
 
   const dim = randomInt(0, 10);
-  const length = randomInt(0, 100);
+  const length = randomInt(0, 10);
 
   for (let i = 0; i < length; i++) {
     data.push([]);
@@ -39,7 +40,19 @@ class App extends Component {
     return (
       <div className="App">
         <Sandbox setData={setData} />
-        <Main data={data} />
+        <div className="plot-container">
+          {
+            data.length ? (
+              <Kmeans data={data} />
+            ) : null
+          }
+          {
+            data.length ? (
+              <Hierarchical data={data} />
+            ) : null
+          }
+        </div>
+
       </div>
     );
   }
