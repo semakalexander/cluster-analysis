@@ -53,16 +53,10 @@ class Hierarchical extends Component {
     };
   }
 
-  componentDidMount() {
-    // this.hUpdate();
-  }
-
   componentWillReceiveProps({ data }) {
     this.hUpdate(data);
   }
 
-  // todo separate hierarchical logic
-  // todo added features to kmeans (centroids etc)
   hUpdate = (updatedData) => {
     const {
       data: oldPoints,
@@ -126,7 +120,7 @@ class Hierarchical extends Component {
           <VerticalGridLines style={gridsStyle} />
           <HorizontalGridLines style={gridsStyle} />
 
-          <MarkSeries colorType="literal" data={data} size={6} />
+          <MarkSeries colorType="literal" data={data} size={5} />
         </FlexibleXYPlot>
         <div className="btn-group">
           {
@@ -141,12 +135,10 @@ class Hierarchical extends Component {
             )
           }
         </div>
-
-            <p className="info-text">
-              Count of clusters: { isExistNextStep ? levels[hIndex].length + 1 : 1 }
-            </p>
         <span className="points-counter">
           {data.length} points
+          <br />
+          Count of clusters: { isExistNextStep ? levels[hIndex].length + 1 : 1 }
         </span>
       </div>
     );

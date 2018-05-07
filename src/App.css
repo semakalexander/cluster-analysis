@@ -1,7 +1,8 @@
 @import "../node_modules/react-vis/dist/style.css";
 
 body {
-  background-color: #151515;
+  /*background-color: #151515;*/
+  font-family: monospace;
 }
 
 .plot-wrapper {
@@ -23,7 +24,7 @@ body {
   background: #fff;
   color: #000;
   cursor: pointer;
-  padding: 15px;
+  padding: 12px 20px;
   border-radius: 3px;
 }
 
@@ -38,7 +39,7 @@ body {
 }
 
 .btn-info2 {
-    color: #222;
+    color: #fff;
     background-color: #0082c8;
 }
 
@@ -46,9 +47,9 @@ body {
     background-color: #0077b9;
 }
 
-.btn-info2:focus{
-    border: 1px solid #5d4343;
-}
+/*.btn-info2:focus{*/
+    /*border: 1px solid #5d4343;*/
+/*}*/
 
 .btn-info {
   color: #222;
@@ -59,9 +60,9 @@ body {
   background-color: #f9df48;
 }
 
-.btn-info:focus{
-  border: 1px solid #5d4343;
-}
+/*.btn-info:focus{*/
+  /*border: 1px solid #5d4343;*/
+/*}*/
 
 .btn-danger {
   color: #fff;
@@ -88,6 +89,7 @@ body {
 .number-inputs {
   display: flex;
   margin-top: 6px;
+  margin-bottom: 6px;
 }
 
 .number-input {
@@ -102,17 +104,28 @@ body {
 
 .number-input-wrapper {
   text-align: center;
-  color: #eee;
+  /*color: #eee;*/
   font-size: 16px;
 }
 
 .info-text {
-    color: white;
+    /*color: white;*/
 }
 
 .points-counter {
-    color: white;
+    /*color: white;*/
     position: absolute;
     left: 60px;
-    bottom: 60px;
+    top: 570px;
+}
+
+.numeric-input {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin-left: 10px;
+}
+
+.disabled-tab{
+  background: #ddd;
 }

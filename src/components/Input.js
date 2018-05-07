@@ -1,29 +1,39 @@
 import React, { Component } from 'react';
 import ReactDataGrid from 'react-data-grid';
+import NumericInput from 'react-numeric-input';
+import CsvParse from '@vtex/react-csv-parse'
+import { generateData } from '../utilities/common';
 
 const generateZeroArray = dimension =>
   [...(new Array(dimension))].map(() => 0);
 
+// todo think about csv structure and add csv loader
 
-class Sandbox extends Component {
+class Input extends Component {
   constructor(props) {
     super(props);
 
     const { data } = props;
 
     this.state = {
-      columns: this.generateColumns(2) /* data.length ?
-        data[0].map((el, i) => ({
-          key: i,
-          name: i,
-          editable: true
-        })) : [] */,
-      rows: [[0, 0], [0, 1], [1,1]],
+      columns: this.generateColumns(2),
+      rows: data,
       dimension: 2,
-      countOfRows: 3
+      countOfRows: data.length || 5
     };
 
   }
+
+  loadData = (files) => {
+    console.log(files)
+  };
+
+  _generateData= () => {
+    this.setState(
+      ({ dimension, countOfRows }) =>
+        ({ rows: generateData(dimension, countOfRows) })
+    );
+  };
 
   rowGetter = (i) => {
     return this.state.rows[i];
@@ -42,7 +52,7 @@ class Sandbox extends Component {
   };
 
 
-  onDimensionChange = ({ target: { value } }) => {
+  onDimensionChange = (value) => {
     const {
       state: {
         dimension,
@@ -69,7 +79,7 @@ class Sandbox extends Component {
       editable: true
     }));
 
-  onCountOfRowsChange = ({ target: { value } }) => {
+  onCountOfRowsChange = value => {
     const {
       countOfRows,
       dimension,
@@ -112,6 +122,8 @@ class Sandbox extends Component {
       onDimensionChange,
       onCountOfRowsChange,
       setData,
+      loadData,
+      _generateData,
       state: {
         rows,
         columns,
@@ -122,32 +134,68 @@ class Sandbox extends Component {
 
     return (
       <div>
-        <input
-          type="number"
-          value={dimension}
-          min={1}
-          max={1000}
-          onChange={onDimensionChange}
-        />
-        <input
-          type="number"
-          value={countOfRows}
-          min={2}
-          max={1000000}
-          onChange={onCountOfRowsChange}
-        />
+        <div className="number-inputs">
+          <label className="numeric-input">
+            dimension
+            <NumericInput
+              label="dimension"
+              value={dimension}
+              min={1}
+              max={1000}
+              onChange={onDimensionChange}
+            />
+          </label>
+          <label className="numeric-input">
+            count of rows
+            <NumericInput
+              label="count of rows"
+              value={countOfRows}
+              min={2}
+              max={1000000}
+              onChange={onCountOfRowsChange}
+            />
+          </label>
+          <button
+            className="btn btn-info2"
+            style={{ marginLeft: 10 }}
+            onClick={_generateData}
+          >
+            Generate Data
+          </button>
+          <button
+            className="btn btn-success"
+            style={{ marginLeft: 10 }}
+            onClick={setData}
+          >
+            Set Data
+          </button>
+        </div>
+
         <ReactDataGrid
           columns={columns}
           rowGetter={rowGetter}
           rowsCount={rows.length}
-          minHeight={200}
+          minHeight={300}
           onGridRowsUpdated={updateRows}
           enableCellSelect
         />
-        <button onClick={setData} >Set Data</button>
+
+
+        <div style={{ marginTop: 10 }}>
+          <p>Output will be here</p>
+          {/* <ReactDataGrid
+            columns={columns}
+            rowGetter={rowGetter}
+            rowsCount={rows.length}
+            minHeight={250}
+            onGridRowsUpdated={updateRows}
+            enableCellSelect
+          /> */}
+        </div>
+
       </div>
     );
   }
 }
 
-export default Sandbox;
+export default Input;

@@ -25,6 +25,19 @@ const isSerialized = data => data.every(el => isExist(el.x));
 let id = 0;
 const newId = (prefix = '') => `${prefix}-${id++}`;
 
+const generateData = (dim = 2, length = 50) => {
+  const data = [];
+
+  for (let i = 0; i < length; i++) {
+    data.push([]);
+    for (let j = 0; j < dim; j++) {
+      data[i].push(randomInt(-100, 100));
+    }
+  }
+
+  return data;
+};
+
 export {
   sum,
   isString,
@@ -36,5 +49,6 @@ export {
   newId,
   serialize,
   deserialize,
-  isSerialized
+  isSerialized,
+  generateData
 }

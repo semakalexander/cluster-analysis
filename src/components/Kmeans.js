@@ -136,13 +136,13 @@ class Kmeans extends Component {
           <VerticalGridLines style={gridsStyle} />
           <HorizontalGridLines style={gridsStyle} />
 
-          <MarkSeries colorType="literal" data={data} size={3} />
+          <MarkSeries colorType="literal" data={data} size={4} />
 
           <MarkSeries
             colorType="literal"
             data={centroidsData}
             animation="gentle"
-            size={5}
+            size={9}
           />
         </FlexibleXYPlot>
         <div className="number-inputs">

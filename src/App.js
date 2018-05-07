@@ -1,30 +1,20 @@
 import React, { Component } from 'react';
-import './App.css';
 import Kmeans from './components/Kmeans';
 import Hierarchical from './components/Hierarchical';
-import Sandbox from './components/Sandbox';
-import { randomInt } from './utilities/common';
+import Input from './components/Input';
+import { generateData } from './utilities/common';
 
-const testData = () => {
-  const data = [];
+import './App.css';
+import 'react-tabs/style/react-tabs.css';
 
-  const dim = randomInt(0, 10);
-  const length = randomInt(0, 10);
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
-  for (let i = 0; i < length; i++) {
-    data.push([]);
-    for (let j = 0; j < dim; j++) {
-      data[i].push(randomInt(-50, 50));
-    }
-  }
 
-  return data;
-};
 
 
 class App extends Component {
   state = {
-    data: [],
+    data: generateData(),
   };
 
   setData = data => this.setState({ data });
@@ -39,20 +29,22 @@ class App extends Component {
 
     return (
       <div className="App">
-        <Sandbox setData={setData} />
-        <div className="plot-container">
-          {
-            data.length ? (
-              <Kmeans data={data} />
-            ) : null
-          }
-          {
-            data.length ? (
-              <Hierarchical data={data} />
-            ) : null
-          }
-        </div>
-
+        <Tabs disabledTabClassName="disabled-tab">
+          <TabList>
+            <Tab>Data</Tab>
+            <Tab disabled={!data.length}>Kmeans</Tab>
+            <Tab disabled={!data.length}>Hierarchical</Tab>
+          </TabList>
+          <TabPanel forceRender>
+            <Input data={data} setData={setData} />
+          </TabPanel>
+          <TabPanel>
+            <Kmeans data={data} />
+          </TabPanel>
+          <TabPanel>
+            <Hierarchical data={data} />
+          </TabPanel>
+        </Tabs>
       </div>
     );
   }
