@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import ReactDataGrid from 'react-data-grid';
 import NumericInput from 'react-numeric-input';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
@@ -15,7 +15,7 @@ import { generateData, generateZeroArray } from '../utilities/common';
 
 // todo think about csv structure and add csv loader
 
-class Input extends Component {
+class DataUI extends Component {
   constructor(props) {
     super(props);
 
@@ -40,9 +40,9 @@ class Input extends Component {
 
   }
 
-  loadData = (files) => {
-    console.log(files)
-  };
+  // loadData = (files) => {
+  //   console.log(files)
+  // };
 
   _generateData = () => {
     this.setState(
@@ -151,7 +151,7 @@ class Input extends Component {
       onCountOfRowsChange,
       onCountOfClustersChange,
       setData,
-      loadData,
+      // loadData,
       _generateData,
       state: {
         data,
@@ -166,81 +166,91 @@ class Input extends Component {
 
     return (
       <div>
-        <div className="number-inputs">
-          <label className="numeric-input">
-            dimension
-            <NumericInput
-              label="dimension"
-              value={dimension}
-              min={1}
-              max={1000}
-              onChange={onDimensionChange}
-            />
-          </label>
-          <label className="numeric-input">
-            count of objects
-            <NumericInput
-              label="count of objects"
-              value={countOfRows}
-              min={2}
-              max={1000000}
-              onChange={onCountOfRowsChange}
-            />
-          </label>
-          <label className="numeric-input">
-            count of clusters
-            <NumericInput
-              label="count of clusters"
-              value={countOfClusters}
-              min={2}
-              max={data.length || 2}
-              onChange={onCountOfClustersChange}
-            />
-          </label>
-          <button
-            className="btn btn-info2"
-            style={{ marginLeft: 10 }}
-            onClick={_generateData}
-          >
-            Generate Data
-          </button>
-          <button
-            className="btn btn-success"
-            style={{ marginLeft: 10 }}
-            onClick={setData}
-          >
-            Set Data
-          </button>
-        </div>
-
-        <ReactDataGrid
-          columns={columns}
-          rowGetter={rowGetter}
-          rowsCount={data.length}
-          minHeight={270}
-          onGridRowsUpdated={updateRows}
-          enableCellSelect
-        />
-
-
         <Tabs>
           <TabList>
-            <Tab>Kmeans</Tab>
-            <Tab>Hierarchical</Tab>
+            <Tab>Input</Tab>
+            <Tab>Output</Tab>
           </TabList>
+
           <TabPanel>
-            {
-              kmeansResults.clusters && (
-                <Results results={kmeansResults} />
-              )
-            }
+            <div className="number-inputs">
+              <label className="numeric-input">
+                dimension
+                <NumericInput
+                  label="dimension"
+                  value={dimension}
+                  min={1}
+                  max={1000}
+                  onChange={onDimensionChange}
+                />
+              </label>
+              <label className="numeric-input">
+                count of objects
+                <NumericInput
+                  label="count of objects"
+                  value={countOfRows}
+                  min={2}
+                  max={1000000}
+                  onChange={onCountOfRowsChange}
+                />
+              </label>
+              <label className="numeric-input">
+                count of clusters
+                <NumericInput
+                  label="count of clusters"
+                  value={countOfClusters}
+                  min={2}
+                  max={data.length || 2}
+                  onChange={onCountOfClustersChange}
+                />
+              </label>
+              <button
+                className="btn btn-info2"
+                style={{ marginLeft: 10 }}
+                onClick={_generateData}
+              >
+                Generate Data
+              </button>
+              <button
+                className="btn btn-success"
+                style={{ marginLeft: 10 }}
+                onClick={setData}
+              >
+                Set Data
+              </button>
+            </div>
+
+            <ReactDataGrid
+              columns={columns}
+              rowGetter={rowGetter}
+              rowsCount={data.length}
+              minHeight={512}
+              onGridRowsUpdated={updateRows}
+              enableCellSelect
+            />
           </TabPanel>
+
           <TabPanel>
-            {
-              hierarchicalResults.length && (
-                <Results results={hierarchicalResults} />
-              )
-            }
+            <Tabs>
+              <TabList>
+                <Tab>Kmeans</Tab>
+                <Tab>Hierarchical</Tab>
+              </TabList>
+              <TabPanel>
+                {
+                  kmeansResults.clusters && (
+                    <Results results={kmeansResults} />
+                  )
+                }
+              </TabPanel>
+              <TabPanel>
+                {
+                  hierarchicalResults.length && (
+                    <Results results={hierarchicalResults} />
+                  )
+                }
+              </TabPanel>
+            </Tabs>
           </TabPanel>
         </Tabs>
       </div>
@@ -248,4 +258,4 @@ class Input extends Component {
   }
 }
 
-export default Input;
+export default DataUI;

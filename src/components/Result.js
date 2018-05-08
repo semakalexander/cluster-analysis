@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import SmoothCollapse from 'react-smooth-collapse';
 
-const borderStyle = { border: '2px solid #444', padding: 10 };
+const borderStyle = { border: '2px solid #444', padding: 10, marginBottom: 6 };
 const levelHeaderStyle = { cursor: 'pointer', margin: 0 };
 const levelExpandedHeaderStyle = { cursor: 'pointer', margin: '0 0 10px 0' };
 const clusterHeaderStyle = { margin: 0 };
@@ -12,7 +12,7 @@ class Result extends Component {
     super(props);
 
     this.state = {
-      expanded: false
+      expanded: !props.isHierarchical
     };
   }
 
@@ -33,12 +33,12 @@ class Result extends Component {
     } = this;
 
     return (
-      <div key={result} style={borderStyle}>
+      <div style={borderStyle}>
         <h3
           style={expanded ? levelExpandedHeaderStyle : levelHeaderStyle}
           onClick={toggle}
         >
-          Level #{level}
+          {`${expanded ? '⯅' : '⯆'} Level #${level + 1}`}
         </h3>
         <SmoothCollapse expanded={expanded}>
           {

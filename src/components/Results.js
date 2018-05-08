@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import Result from './Result';
 
-const containerStyle = { overflowY: 'scroll', height: 260 };
+const containerStyle = { overflowY: 'scroll', height: 512 };
 
 const Results = ({ results }) => {
   let keyPrefix = 'hierarchical';
@@ -19,10 +19,11 @@ const Results = ({ results }) => {
       {
         results.map((result, level) => (
           <Result
-            key={result}
+            key={isHierarchical ? result.source.index : 'kmeans-result'}
             result={result}
             keyPrefix={keyPrefix}
             level={level}
+            isHierarchical={isHierarchical}
           />
         ))
       }
