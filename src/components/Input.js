@@ -1,8 +1,18 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import ReactDataGrid from 'react-data-grid';
 import NumericInput from 'react-numeric-input';
-import CsvParse from '@vtex/react-csv-parse'
+import CsvParse from '@vtex/react-csv-parse';
+import agglo from 'agglo';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+
+
+import kmeans from '../utilities/kmeans';
+
 import { generateData } from '../utilities/common';
+
+import { mainColors } from '../helpers/colors';
+
+
 
 const generateZeroArray = dimension =>
   [...(new Array(dimension))].map(() => 0);
@@ -20,6 +30,8 @@ class Input extends Component {
       dimension: 2,
       countOfRows: data.length || 5,
       countOfClusters: 2,
+      kmeansResults: [],
+      hierarchicalResults: [],
       data
     };
 
@@ -52,7 +64,6 @@ class Input extends Component {
     this.setState({ data });
   };
 
-
   onDimensionChange = (value) => {
     const {
       state: {
@@ -71,7 +82,6 @@ class Input extends Component {
       data
     });
   };
-
 
   generateColumns = (dimension = this.state.dimension) =>
     [...new Array(dimension)].map((el, i) => ({
@@ -109,11 +119,18 @@ class Input extends Component {
         setData,
       },
       state: {
-        data
+        data,
+        countOfClusters
       }
     } = this;
 
+
     setData(data);
+
+    this.setState({
+      kmeansResults: kmeans(data, { k: countOfClusters }),
+      hierarchicalResults: agglo(data)
+    });
   };
 
   onCountOfClustersChange = (value) => {
@@ -135,7 +152,9 @@ class Input extends Component {
         columns,
         dimension,
         countOfRows,
-        countOfClusters
+        countOfClusters,
+        hierarchicalResults,
+        kmeansResults
       }
     } = this;
 
@@ -198,18 +217,28 @@ class Input extends Component {
         />
 
 
-        <div style={{ marginTop: 10 }}>
-          <p>Output will be here</p>
-          {/* <ReactDataGrid
-            columns={columns}
-            rowGetter={rowGetter}
-            rowsCount={data.length}
-            minHeight={250}
-            onGridRowsUpdated={updateRows}
-            enableCellSelect
-          /> */}
-        </div>
-
+        <Tabs>
+          <TabList>
+            <Tab>Kmeans</Tab>
+            <Tab>Hierarchical</Tab>
+          </TabList>
+          <TabPanel>
+            <div style={{ marginTop: 10 }}>
+              {
+                kmeansResults.clusters && kmeansResults.clusters.map((cluster, i) => (
+                  <div>
+                    <h6>Cluster #{i + 1}</h6>
+                    <p style={{ fontSize: 10 }}>
+                      {
+                        cluster.map(el => `(${el.join(',')})`).join(', ')
+                      }
+                    </p>
+                  </div>
+                ))
+              }
+            </div>
+          </TabPanel>
+        </Tabs>
       </div>
     );
   }
