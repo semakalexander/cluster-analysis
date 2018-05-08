@@ -34,7 +34,6 @@ class App extends Component {
           <TabList>
             <Tab>Data</Tab>
             <Tab>Visualization</Tab>
-
           </TabList>
           <TabPanel forceRender>
             <DataUI data={data} setData={setData} />

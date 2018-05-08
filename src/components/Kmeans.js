@@ -48,7 +48,7 @@ class Kmeans extends Component {
       centroidsData: [],
       countOfClusters,
       width: 1024,
-      height: 542,
+      height: 500,
       hOriginalData: [],
       hData: [],
       hIndex: 0,

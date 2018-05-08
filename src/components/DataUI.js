@@ -177,7 +177,6 @@ class DataUI extends Component {
               <label className="numeric-input">
                 dimension
                 <NumericInput
-                  label="dimension"
                   value={dimension}
                   min={1}
                   max={1000}
@@ -187,7 +186,6 @@ class DataUI extends Component {
               <label className="numeric-input">
                 count of objects
                 <NumericInput
-                  label="count of objects"
                   value={countOfRows}
                   min={2}
                   max={1000000}
@@ -195,9 +193,8 @@ class DataUI extends Component {
                 />
               </label>
               <label className="numeric-input">
-                count of clusters
+                count of clusters(kmeans)
                 <NumericInput
-                  label="count of clusters"
                   value={countOfClusters}
                   min={2}
                   max={data.length || 2}
@@ -216,7 +213,7 @@ class DataUI extends Component {
                 style={{ marginLeft: 10 }}
                 onClick={setData}
               >
-                Set Data
+                Compute
               </button>
             </div>
 

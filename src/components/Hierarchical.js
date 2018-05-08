@@ -46,7 +46,7 @@ class Hierarchical extends Component {
     this.state = {
       data: serialize(data),
       width: 1024,
-      height: 542,
+      height: 500,
       levels: [[]],
       hIndex: 0,
       isExistNextStep: false
@@ -122,7 +122,7 @@ class Hierarchical extends Component {
 
           <MarkSeries colorType="literal" data={data} size={5} />
         </FlexibleXYPlot>
-        <div className="btn-group">
+        <div style={{ marginTop: 15 }} className="btn-group">
           {
             isExistNextStep ? (
               <button className="btn btn-info2" onClick={hNextStep}>
@@ -130,7 +130,7 @@ class Hierarchical extends Component {
               </button>
             ) : (
               <button className="btn btn-info2" onClick={() => this.hUpdate()}>
-                Start
+                Start visualisation
               </button>
             )
           }
@@ -138,7 +138,7 @@ class Hierarchical extends Component {
         <span className="points-counter">
           {data.length} points
           <br />
-          Count of clusters: { isExistNextStep ? levels[hIndex].length + 1 : 1 }
+          Count of clusters: {isExistNextStep ? levels[hIndex].length + 1 : 1}
         </span>
       </div>
     );
