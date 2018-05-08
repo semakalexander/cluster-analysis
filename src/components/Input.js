@@ -17,9 +17,10 @@ class Input extends Component {
 
     this.state = {
       columns: this.generateColumns(2),
-      rows: data,
       dimension: 2,
-      countOfRows: data.length || 5
+      countOfRows: data.length || 5,
+      countOfClusters: 2,
+      data
     };
 
   }
@@ -28,27 +29,27 @@ class Input extends Component {
     console.log(files)
   };
 
-  _generateData= () => {
+  _generateData = () => {
     this.setState(
       ({ dimension, countOfRows }) =>
-        ({ rows: generateData(dimension, countOfRows) })
+        ({ data: generateData(dimension, countOfRows) })
     );
   };
 
   rowGetter = (i) => {
-    return this.state.rows[i];
+    return this.state.data[i];
   };
 
   updateRows = ({ fromRow, toRow, updated }) => {
-    let rows = [...this.state.rows];
+    let data = [...this.state.data];
     for (let i = fromRow; i <= toRow; i++) {
       Object.keys(updated).forEach(key => {
         const value = +updated[key];
-        rows[i][key] = isNaN(value) ? 0 : value;
+        data[i][key] = isNaN(value) ? 0 : value;
       });
     }
 
-    this.setState({ rows });
+    this.setState({ data });
   };
 
 
@@ -56,18 +57,18 @@ class Input extends Component {
     const {
       state: {
         dimension,
-        rows: oldRows
+        data: oldData
       }
     } = this;
 
-    const rows = +value > dimension ?
-      oldRows.map(row => [...row, ...generateZeroArray(+value - dimension)]) :
-      oldRows.map(row => row.slice(0, +value));
+    const data = +value > dimension ?
+      oldData.map(row => [...row, ...generateZeroArray(+value - dimension)]) :
+      oldData.map(row => row.slice(0, +value));
 
     this.setState({
       dimension: +value,
       columns: this.generateColumns(+value),
-      rows
+      data
     });
   };
 
@@ -83,22 +84,22 @@ class Input extends Component {
     const {
       countOfRows,
       dimension,
-      rows: oldRows
+      data: oldData
     } = this.state;
 
     if (+value === countOfRows) return;
 
-    let rows = [...oldRows];
+    let data = [...oldData];
 
     if (value > countOfRows) {
       for (let i = 0; i < value - countOfRows; i++) {
-        rows.push(generateZeroArray(dimension));
+        data.push(generateZeroArray(dimension));
       }
     } else {
-      rows = rows.slice(0, value);
+      data = data.slice(0, value);
     }
 
-    this.setState({ countOfRows: +value, rows });
+    this.setState({ countOfRows: +value, data });
 
   };
 
@@ -108,11 +109,15 @@ class Input extends Component {
         setData,
       },
       state: {
-        rows
+        data
       }
     } = this;
 
-    setData(rows);
+    setData(data);
+  };
+
+  onCountOfClustersChange = (value) => {
+    this.setState({ countOfClusters: value })
   };
 
   render() {
@@ -121,14 +126,16 @@ class Input extends Component {
       updateRows,
       onDimensionChange,
       onCountOfRowsChange,
+      onCountOfClustersChange,
       setData,
       loadData,
       _generateData,
       state: {
-        rows,
+        data,
         columns,
         dimension,
-        countOfRows
+        countOfRows,
+        countOfClusters
       }
     } = this;
 
@@ -146,13 +153,23 @@ class Input extends Component {
             />
           </label>
           <label className="numeric-input">
-            count of rows
+            count of objects
             <NumericInput
-              label="count of rows"
+              label="count of objects"
               value={countOfRows}
               min={2}
               max={1000000}
               onChange={onCountOfRowsChange}
+            />
+          </label>
+          <label className="numeric-input">
+            count of clusters
+            <NumericInput
+              label="count of clusters"
+              value={countOfClusters}
+              min={2}
+              max={data.length || 2}
+              onChange={onCountOfClustersChange}
             />
           </label>
           <button
@@ -174,7 +191,7 @@ class Input extends Component {
         <ReactDataGrid
           columns={columns}
           rowGetter={rowGetter}
-          rowsCount={rows.length}
+          rowsCount={data.length}
           minHeight={300}
           onGridRowsUpdated={updateRows}
           enableCellSelect
@@ -186,7 +203,7 @@ class Input extends Component {
           {/* <ReactDataGrid
             columns={columns}
             rowGetter={rowGetter}
-            rowsCount={rows.length}
+            rowsCount={data.length}
             minHeight={250}
             onGridRowsUpdated={updateRows}
             enableCellSelect
