@@ -1,17 +1,17 @@
 import React, { Component, Fragment } from 'react';
 import ReactDataGrid from 'react-data-grid';
 import NumericInput from 'react-numeric-input';
-import CsvParse from '@vtex/react-csv-parse';
-import agglo from 'agglo';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+// import CsvParse from '@vtex/react-csv-parse';
 
+import agglo from 'agglo';
+
+import Results from './Results';
 
 import kmeans from '../utilities/kmeans';
 
-import { generateData } from '../utilities/common';
+import { generateData, generateZeroArray } from '../utilities/common';
 
-const generateZeroArray = dimension =>
-  [...(new Array(dimension))].map(() => 0);
 
 // todo think about csv structure and add csv loader
 
@@ -118,7 +118,7 @@ class Input extends Component {
 
   compute = (data, { countOfClusters }) => ({
     kmeansResults: kmeans(data, { k: countOfClusters }),
-    hierarchicalResults: agglo(data)
+    hierarchicalResults: agglo(data).reverse()
   });
 
   setData = () => {
@@ -229,22 +229,18 @@ class Input extends Component {
             <Tab>Hierarchical</Tab>
           </TabList>
           <TabPanel>
-            <div style={{ marginTop: 10, overflowY: 'scroll', height: 260 }}>
-              {
-                kmeansResults.clusters && kmeansResults.clusters.map((cluster, i) => (
-                  <div key={`kmeans-results-cluster-${cluster}`}>
-                    <h6>Cluster #{i + 1}</h6>
-                    <p style={{ fontSize: 10 }}>
-                      {
-                        cluster.map(el => `(${el.join(',')})`).join(', ')
-                      }
-                    </p>
-                  </div>
-                ))
-              }
-            </div>
+            {
+              kmeansResults.clusters && (
+                <Results results={kmeansResults} />
+              )
+            }
           </TabPanel>
           <TabPanel>
+            {
+              hierarchicalResults.length && (
+                <Results results={hierarchicalResults} />
+              )
+            }
           </TabPanel>
         </Tabs>
       </div>

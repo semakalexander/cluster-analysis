@@ -38,6 +38,9 @@ const generateData = (dim = 2, length = 50) => {
   return data;
 };
 
+const generateZeroArray = dimension =>
+  [...(new Array(dimension))].map(() => 0);
+
 export {
   sum,
   isString,
@@ -50,5 +53,6 @@ export {
   serialize,
   deserialize,
   isSerialized,
-  generateData
+  generateData,
+  generateZeroArray
 }
