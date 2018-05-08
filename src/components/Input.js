@@ -10,10 +10,6 @@ import kmeans from '../utilities/kmeans';
 
 import { generateData } from '../utilities/common';
 
-import { mainColors } from '../helpers/colors';
-
-
-
 const generateZeroArray = dimension =>
   [...(new Array(dimension))].map(() => 0);
 
@@ -25,13 +21,20 @@ class Input extends Component {
 
     const { data } = props;
 
+    const countOfClusters = 3;
+
+    const {
+      kmeansResults,
+      hierarchicalResults
+    } = this.compute(data, { countOfClusters });
+
     this.state = {
       columns: this.generateColumns(2),
       dimension: 2,
       countOfRows: data.length || 5,
-      countOfClusters: 2,
-      kmeansResults: [],
-      hierarchicalResults: [],
+      countOfClusters,
+      kmeansResults,
+      hierarchicalResults,
       data
     };
 
@@ -113,8 +116,14 @@ class Input extends Component {
 
   };
 
+  compute = (data, { countOfClusters }) => ({
+    kmeansResults: kmeans(data, { k: countOfClusters }),
+    hierarchicalResults: agglo(data)
+  });
+
   setData = () => {
     const {
+      compute,
       props: {
         setData,
       },
@@ -125,12 +134,9 @@ class Input extends Component {
     } = this;
 
 
-    setData(data);
+    setData(data, { countOfClusters });
 
-    this.setState({
-      kmeansResults: kmeans(data, { k: countOfClusters }),
-      hierarchicalResults: agglo(data)
-    });
+    this.setState(compute(data, { countOfClusters }));
   };
 
   onCountOfClustersChange = (value) => {
@@ -211,7 +217,7 @@ class Input extends Component {
           columns={columns}
           rowGetter={rowGetter}
           rowsCount={data.length}
-          minHeight={300}
+          minHeight={270}
           onGridRowsUpdated={updateRows}
           enableCellSelect
         />
@@ -223,10 +229,10 @@ class Input extends Component {
             <Tab>Hierarchical</Tab>
           </TabList>
           <TabPanel>
-            <div style={{ marginTop: 10 }}>
+            <div style={{ marginTop: 10, overflowY: 'scroll', height: 260 }}>
               {
                 kmeansResults.clusters && kmeansResults.clusters.map((cluster, i) => (
-                  <div>
+                  <div key={`kmeans-results-cluster-${cluster}`}>
                     <h6>Cluster #{i + 1}</h6>
                     <p style={{ fontSize: 10 }}>
                       {
@@ -237,6 +243,8 @@ class Input extends Component {
                 ))
               }
             </div>
+          </TabPanel>
+          <TabPanel>
           </TabPanel>
         </Tabs>
       </div>

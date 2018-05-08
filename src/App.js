@@ -15,15 +15,19 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 class App extends Component {
   state = {
     data: generateData(),
+    options: {
+      countOfClusters: 3
+    }
   };
 
-  setData = data => this.setState({ data });
+  setData = (data, options) => this.setState({ data, options });
 
   render() {
     const {
       setData,
       state: {
-        data
+        data,
+        options
       }
     } = this;
 
@@ -39,7 +43,7 @@ class App extends Component {
             <Input data={data} setData={setData} />
           </TabPanel>
           <TabPanel>
-            <Kmeans data={data} />
+            <Kmeans data={data} options={options} />
           </TabPanel>
           <TabPanel>
             <Hierarchical data={data} />

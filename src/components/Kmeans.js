@@ -37,14 +37,16 @@ class Kmeans extends Component {
 
     const {
       data = [],
-      centroids,
-      clustersCount = 3
+      options: {
+        countOfClusters,
+        centroids,
+      },
     } = props;
 
     this.state = {
       data: serialize(data),
       centroidsData: [],
-      clustersCount,
+      countOfClusters,
       width: 1024,
       height: 542,
       hOriginalData: [],
@@ -68,13 +70,13 @@ class Kmeans extends Component {
         data,
       },
       state: {
-        clustersCount
+        countOfClusters
       }
     } = this;
 
     data = updatedData || data;
 
-    const { clusters, centroids } = kmeans(data, { k: clustersCount });
+    const { clusters, centroids } = kmeans(data, { k: countOfClusters });
 
     const colors =
       clusters.length > mainColors.length ?
@@ -107,20 +109,20 @@ class Kmeans extends Component {
 
   // todo added features to kmeans (centroids etc)
 
-  handleClustersCount = v =>
+  handleCountOfClusters = v =>
     this.setState(
-      () => ({ clustersCount: v < 1 ? 1 : v }),
+      () => ({ countOfClusters: v < 1 ? 1 : v }),
       () => this.cUpdate()
     );
 
   render() {
     const {
-      handleClustersCount,
+      handleCountOfClusters,
       state: {
         data,
         centroidsData,
         height,
-        clustersCount,
+        countOfClusters,
       }
     } = this;
 
@@ -147,10 +149,10 @@ class Kmeans extends Component {
         </FlexibleXYPlot>
         <div className="number-inputs">
           <NumberInput
-            value={clustersCount}
+            value={countOfClusters}
             label="count of clusters"
             min={1}
-            onChange={handleClustersCount}
+            onChange={handleCountOfClusters}
           />
         </div>
         <span className="points-counter">
