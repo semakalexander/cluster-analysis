@@ -39,12 +39,13 @@ body {
 }
 
 .btn-info2 {
-    color: #fff;
-    background-color: #0082c8;
+    color: #444;
+    background-color: #ffe119;
 }
 
 .btn-info2:hover {
-    background-color: #0077b9;
+  color: #555;
+    background-color: #ffea00;
 }
 
 .btn-info {
@@ -66,12 +67,13 @@ body {
 }
 
 .btn-success {
-  color: #fff;
-  background-color: #01FF70;
+  color: #444;
+  background-color: #66d4d4;
 }
 
 .btn-success:hover {
-  background-color: #2ecc40;
+  color: #555;
+  background-color: #00b2d4;
 }
 
 .btn:active {

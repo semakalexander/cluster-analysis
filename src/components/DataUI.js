@@ -283,7 +283,6 @@ class DataUI extends Component {
             >
               Compute
             </button>
-
             <div
               style={{ marginLeft: 10, cursor: 'pointer' }}
             >
@@ -301,7 +300,6 @@ class DataUI extends Component {
                   onClick={() => this.input.click()}
                 />
             </div>
-
             <div
               style={{ marginLeft: 10, cursor: 'pointer' }}
               onClick={saveToFile}
