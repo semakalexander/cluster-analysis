@@ -41,6 +41,48 @@ const generateData = (dim = 2, length = 50) => {
 const generateZeroArray = dimension =>
   [...(new Array(dimension))].map(() => 0);
 
+const parseCSV = (csv, separator = ',') => {
+  try {
+    const rows = csv
+      .split('\n')
+      .map(row =>
+        row.split(separator).map(c => isNaN(+c) ? c : +c)
+      );
+
+    const headers = rows[0];
+
+    return {
+      headers,
+      data: rows.slice(1)
+    }
+  }
+  catch(err) {
+    console.err('something get wrong in paring csv', err);
+    return {
+      headers: '',
+      data: []
+    }
+  }
+};
+
+const unparse = (headers, data) =>
+  `${headers.join(',')}\n${data.map(row => row.join(',')).join('\n')}`;
+
+const download =(filename, csv) => {
+  const pom = document.createElement('a');
+  pom.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv));
+  pom.setAttribute('download', filename);
+
+  if (document.createEvent) {
+    const event = document.createEvent('MouseEvents');
+    event.initEvent('click', true, true);
+    pom.dispatchEvent(event);
+  }
+  else {
+    pom.click();
+  }
+};
+
 export {
   sum,
   isString,
@@ -54,5 +96,8 @@ export {
   deserialize,
   isSerialized,
   generateData,
-  generateZeroArray
+  generateZeroArray,
+  parseCSV,
+  unparse,
+  download
 }

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactDataGrid from 'react-data-grid';
 import NumericInput from 'react-numeric-input';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-// import CsvParse from '@vtex/react-csv-parse';
+import ReactFileReader from 'react-file-reader';
 
 import agglo from 'agglo';
 
@@ -10,10 +10,14 @@ import Results from './Results';
 
 import kmeans from '../utilities/kmeans';
 
-import { generateData, generateZeroArray } from '../utilities/common';
+import {
+  generateData,
+  generateZeroArray,
+  parseCSV,
+  unparse,
+  download
+} from '../utilities/common';
 
-
-// todo think about csv structure and add csv loader
 
 class DataUI extends Component {
   constructor(props) {
@@ -143,6 +147,41 @@ class DataUI extends Component {
     this.setState({ countOfClusters: value })
   };
 
+  uploadFile = (files) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const {
+        headers,
+        data
+      } = parseCSV(reader.result);
+      this.setState({
+        columns: headers.map((h, i) => ({
+          key: i,
+          name: h,
+          editable: true
+        })),
+        countOfRows: data.length,
+        dimension: data[0].length,
+        data,
+      });
+    };
+
+    reader.readAsText(files[0]);
+  };
+
+  saveToFile = () => {
+    const {
+      state: {
+        columns,
+        data
+      }
+    } = this;
+
+    const output = unparse(columns.map(c => c.name), data);
+
+    download('cluster-data.csv', output)
+  };
+
   render() {
     const {
       rowGetter,
@@ -151,8 +190,9 @@ class DataUI extends Component {
       onCountOfRowsChange,
       onCountOfClustersChange,
       setData,
-      // loadData,
       _generateData,
+      uploadFile,
+      saveToFile,
       state: {
         data,
         columns,
@@ -214,6 +254,25 @@ class DataUI extends Component {
                 onClick={setData}
               >
                 Compute
+              </button>
+
+              <ReactFileReader
+                handleFiles={uploadFile}
+                fileTypes={'.csv'}
+              >
+                <button
+                  className="btn btn-info"
+                  style={{ marginLeft: 50 }}
+                >
+                  Upload file
+                </button>
+              </ReactFileReader>
+              <button
+                className="btn btn-info"
+                style={{ marginLeft: 10 }}
+                onClick={saveToFile}
+              >
+                Save to file
               </button>
             </div>
 
