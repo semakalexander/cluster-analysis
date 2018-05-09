@@ -22,7 +22,6 @@ import UploadIcon from '../icons/upload-button.svg'
 
 NumericInput.style.input.width = 100;
 NumericInput.style.input.textAlign = 'center';
-NumericInput.style.input.marginTop = 4;
 
 class DataUI extends Component {
   constructor(props) {
@@ -227,7 +226,7 @@ class DataUI extends Component {
         <TabPanel>
           <div className="number-inputs">
             <label className="numeric-input">
-              dimension
+              <span style={{ marginBottom: 4 }}>dimension</span>
               <NumericInput
                 value={dimension}
                 min={1}
@@ -236,7 +235,7 @@ class DataUI extends Component {
               />
             </label>
             <label className="numeric-input">
-              objects
+              <span style={{ marginBottom: 4 }}>objects</span>
               <NumericInput
                 value={countOfRows}
                 min={2}
@@ -245,7 +244,7 @@ class DataUI extends Component {
               />
             </label>
             <label className="numeric-input">
-              clusters
+              <span style={{ marginBottom: 4 }}>clusters</span>
               <NumericInput
                 value={countOfClusters}
                 min={2}
@@ -254,14 +253,14 @@ class DataUI extends Component {
               />
             </label>
             <label className="numeric-input">
-              min
+              <span style={{ marginBottom: 4 }}>min</span>
               <NumericInput
                 value={minValue}
                 onChange={handleMinValue}
               />
             </label>
             <label className="numeric-input">
-              max
+              <span style={{ marginBottom: 4 }}>max</span>
               <NumericInput
                 value={maxValue}
                 onChange={handleMaxValue}
@@ -286,19 +285,19 @@ class DataUI extends Component {
             <div
               style={{ marginLeft: 10, cursor: 'pointer' }}
             >
-                <input
-                  type="file"
-                  onChange={uploadFile}
-                  ref={node => this.input = node}
-                  accept=".csv"
-                  hidden
-                />
-                <img
-                  src={UploadIcon}
-                  width={35}
-                  height={35}
-                  onClick={() => this.input.click()}
-                />
+              <input
+                type="file"
+                onChange={uploadFile}
+                ref={node => this.input = node}
+                accept=".csv"
+                hidden
+              />
+              <img
+                src={UploadIcon}
+                width={35}
+                height={35}
+                onClick={() => this.input.click()}
+              />
             </div>
             <div
               style={{ marginLeft: 10, cursor: 'pointer' }}
