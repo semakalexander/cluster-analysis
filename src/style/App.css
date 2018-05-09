@@ -1,4 +1,4 @@
-@import "../node_modules/react-vis/dist/style.css";
+@import "../../node_modules/react-vis/dist/style.css";
 
 body {
   /*background-color: #151515;*/
@@ -24,7 +24,7 @@ body {
   background: #fff;
   color: #000;
   cursor: pointer;
-  padding: 12px 20px;
+  padding: 12px 14px;
   border-radius: 3px;
 }
 
@@ -47,10 +47,6 @@ body {
     background-color: #0077b9;
 }
 
-/*.btn-info2:focus{*/
-    /*border: 1px solid #5d4343;*/
-/*}*/
-
 .btn-info {
   color: #222;
   background-color: #f7e161;
@@ -59,10 +55,6 @@ body {
 .btn-info:hover {
   background-color: #f9df48;
 }
-
-/*.btn-info:focus{*/
-  /*border: 1px solid #5d4343;*/
-/*}*/
 
 .btn-danger {
   color: #fff;
@@ -86,6 +78,7 @@ body {
   transform: translateY(1px);
 }
 
+
 .number-inputs {
   display: flex;
   margin-top: 6px;
@@ -105,12 +98,9 @@ body {
 .number-input-wrapper {
   text-align: center;
   /*color: #eee;*/
-  font-size: 16px;
+  /*font-size: 16px;*/
 }
 
-.info-text {
-    /*color: white;*/
-}
 
 .points-counter {
     /*color: white;*/
@@ -131,17 +121,17 @@ body {
 }
 
 
-table {
-  border-collapse: collapse;
-  width: 100%;
-}
+/*table {*/
+  /*border-collapse: collapse;*/
+  /*width: 100%;*/
+/*}*/
 
-th, td {
-  text-align: center;
-  padding: 8px;
-}
+/*th, td {*/
+  /*text-align: center;*/
+  /*padding: 8px;*/
+/*}*/
 
-th {
-  background-color: #4CAF50;
-  color: white;
-}
+/*th {*/
+  /*background-color: #4CAF50;*/
+  /*color: white;*/
+/*}*/

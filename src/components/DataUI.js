@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import ReactDataGrid from 'react-data-grid';
 import NumericInput from 'react-numeric-input';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import ReactFileReader from 'react-file-reader';
 
 import agglo from 'agglo';
 
@@ -18,7 +17,12 @@ import {
   download
 } from '../utilities/common';
 
+import DownloadIcon from '../icons/download-button.svg';
+import UploadIcon from '../icons/upload-button.svg'
+
 NumericInput.style.input.width = 100;
+NumericInput.style.input.textAlign = 'center';
+NumericInput.style.input.marginTop = 4;
 
 class DataUI extends Component {
   constructor(props) {
@@ -46,10 +50,6 @@ class DataUI extends Component {
     };
 
   }
-
-  // loadData = (files) => {
-  //   console.log(files)
-  // };
 
   _generateData = () => {
     this.setState(
@@ -150,7 +150,7 @@ class DataUI extends Component {
     this.setState({ countOfClusters: value })
   };
 
-  uploadFile = (files) => {
+  uploadFile = (e) => {
     const reader = new FileReader();
     reader.onload = () => {
       const {
@@ -169,7 +169,7 @@ class DataUI extends Component {
       });
     };
 
-    reader.readAsText(files[0]);
+    reader.readAsText(e.target.files[0]);
   };
 
   saveToFile = () => {
@@ -218,127 +218,135 @@ class DataUI extends Component {
     } = this;
 
     return (
-      <div>
-        <Tabs>
-          <TabList>
-            <Tab>Input</Tab>
-            <Tab>Output</Tab>
-          </TabList>
+      <Tabs>
+        <TabList>
+          <Tab>Input</Tab>
+          <Tab>Output</Tab>
+        </TabList>
 
-          <TabPanel>
-            <div className="number-inputs">
-              <label className="numeric-input">
-                dimension
-                <NumericInput
-                  value={dimension}
-                  min={1}
-                  max={1000}
-                  onChange={onDimensionChange}
-                />
-              </label>
-              <label className="numeric-input">
-                objects
-                <NumericInput
-                  value={countOfRows}
-                  min={2}
-                  max={1000000}
-                  onChange={onCountOfRowsChange}
-                />
-              </label>
-              <label className="numeric-input">
-                clusters
-                <NumericInput
-                  value={countOfClusters}
-                  min={2}
-                  max={data.length || 2}
-                  onChange={onCountOfClustersChange}
-                />
-              </label>
-              <label className="numeric-input">
-                min
-                <NumericInput
-                  value={minValue}
-                  onChange={handleMinValue}
-                />
-              </label>
-              <label className="numeric-input">
-                max
-                <NumericInput
-                  value={maxValue}
-                  onChange={handleMaxValue}
-                  max={1000}
-                  style={{ width: 20 }}
-                />
-              </label>
-              <button
-                className="btn btn-info2"
-                style={{ marginLeft: 10 }}
-                onClick={_generateData}
-              >
-                Generate Data
-              </button>
-              <button
-                className="btn btn-success"
-                style={{ marginLeft: 10 }}
-                onClick={setData}
-              >
-                Compute
-              </button>
+        <TabPanel>
+          <div className="number-inputs">
+            <label className="numeric-input">
+              dimension
+              <NumericInput
+                value={dimension}
+                min={1}
+                max={1000}
+                onChange={onDimensionChange}
+              />
+            </label>
+            <label className="numeric-input">
+              objects
+              <NumericInput
+                value={countOfRows}
+                min={2}
+                max={1000000}
+                onChange={onCountOfRowsChange}
+              />
+            </label>
+            <label className="numeric-input">
+              clusters
+              <NumericInput
+                value={countOfClusters}
+                min={2}
+                max={data.length || 2}
+                onChange={onCountOfClustersChange}
+              />
+            </label>
+            <label className="numeric-input">
+              min
+              <NumericInput
+                value={minValue}
+                onChange={handleMinValue}
+              />
+            </label>
+            <label className="numeric-input">
+              max
+              <NumericInput
+                value={maxValue}
+                onChange={handleMaxValue}
+                max={1000}
+                style={{ width: 20 }}
+              />
+            </label>
+            <button
+              className="btn btn-info2"
+              style={{ marginLeft: 10 }}
+              onClick={_generateData}
+            >
+              Generate Data
+            </button>
+            <button
+              className="btn btn-success"
+              style={{ marginLeft: 10 }}
+              onClick={setData}
+            >
+              Compute
+            </button>
 
-              <ReactFileReader
-                handleFiles={uploadFile}
-                fileTypes={'.csv'}
-              >
-                <button
-                  className="btn btn-info"
-                  style={{ marginLeft: 50 }}
-                >
-                  Upload file
-                </button>
-              </ReactFileReader>
-              <button
-                className="btn btn-info"
-                style={{ marginLeft: 10 }}
-                onClick={saveToFile}
-              >
-                Save to file
-              </button>
+            <div
+              style={{ marginLeft: 10, cursor: 'pointer' }}
+            >
+                <input
+                  type="file"
+                  onChange={uploadFile}
+                  ref={node => this.input = node}
+                  accept=".csv"
+                  hidden
+                />
+                <img
+                  src={UploadIcon}
+                  width={35}
+                  height={35}
+                  onClick={() => this.input.click()}
+                />
             </div>
 
-            <ReactDataGrid
-              columns={columns}
-              rowGetter={rowGetter}
-              rowsCount={data.length}
-              minHeight={512}
-              onGridRowsUpdated={updateRows}
-              enableCellSelect
-            />
-          </TabPanel>
+            <div
+              style={{ marginLeft: 10, cursor: 'pointer' }}
+              onClick={saveToFile}
+            >
+              <img
+                src={DownloadIcon}
+                width={35}
+                height={35}
+              />
+            </div>
+          </div>
 
-          <TabPanel>
-            <Tabs>
-              <TabList>
-                <Tab>Kmeans</Tab>
-                <Tab>Hierarchical</Tab>
-              </TabList>
-              <TabPanel>
-                {
-                  kmeansResults.clusters && (
-                    <Results results={kmeansResults} />
-                  )
-                }
-              </TabPanel>
-              <TabPanel>
-                {
-                  hierarchicalResults.length && (
-                    <Results results={hierarchicalResults} />
-                  )
-                }
-              </TabPanel>
-            </Tabs>
-          </TabPanel>
-        </Tabs>
-      </div>
+          <ReactDataGrid
+            columns={columns}
+            rowGetter={rowGetter}
+            rowsCount={data.length}
+            minHeight={512}
+            onGridRowsUpdated={updateRows}
+            enableCellSelect
+          />
+        </TabPanel>
+
+        <TabPanel>
+          <Tabs>
+            <TabList>
+              <Tab>Kmeans</Tab>
+              <Tab>Hierarchical</Tab>
+            </TabList>
+            <TabPanel>
+              {
+                kmeansResults.clusters && (
+                  <Results results={kmeansResults} />
+                )
+              }
+            </TabPanel>
+            <TabPanel>
+              {
+                hierarchicalResults.length && (
+                  <Results results={hierarchicalResults} />
+                )
+              }
+            </TabPanel>
+          </Tabs>
+        </TabPanel>
+      </Tabs>
     );
   }
 }
