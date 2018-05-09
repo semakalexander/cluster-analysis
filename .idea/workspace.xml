@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f7c41e06-50a8-4293-a76b-b0c4d12f3b52" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data.csv" />
+    <list default="true" id="f7c41e06-50a8-4293-a76b-b0c4d12f3b52" name="Default" comment="added up-/download .csv files">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/DataUI.js" afterPath="$PROJECT_DIR$/src/components/DataUI.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/utilities/common.js" afterPath="$PROJECT_DIR$/src/utilities/common.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/yarn.lock" afterPath="$PROJECT_DIR$/yarn.lock" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -24,31 +21,20 @@
       <file leaf-file-name="DataUI.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/components/DataUI.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2952">
-              <caret line="264" column="40" lean-forward="false" selection-start-line="264" selection-start-column="40" selection-end-line="264" selection-end-column="40" />
+            <state relative-caret-position="18">
+              <caret line="4" column="48" lean-forward="false" selection-start-line="4" selection-start-column="48" selection-end-line="4" selection-end-column="48" />
               <folding>
-                <element signature="e#0#41#0" expanded="true" />
-                <element signature="e#1005#1131#0" expanded="false" />
-                <element signature="e#1155#1191#0" expanded="false" />
-                <element signature="e#1242#1505#0" expanded="false" />
-                <element signature="e#1541#1912#0" expanded="false" />
-                <element signature="e#2114#2527#0" expanded="false" />
-                <element signature="e#4159#4248#0" expanded="false" />
-                <element signature="e#4329#4598#0" expanded="false" />
-                <element signature="e#4613#4896#0" expanded="false" />
-                <element signature="e#4911#5220#0" expanded="false" />
-                <element signature="e#6507#7129#0" expanded="false" />
+                <element signature="e#1274#1310#0" expanded="false" />
+                <element signature="e#1361#1624#0" expanded="false" />
+                <element signature="e#1660#2031#0" expanded="false" />
+                <element signature="e#2233#2646#0" expanded="false" />
+                <element signature="e#4502#4591#0" expanded="false" />
+                <element signature="e#4672#4941#0" expanded="false" />
+                <element signature="e#4956#5230#0" expanded="false" />
+                <element signature="e#5245#5537#0" expanded="false" />
+                <element signature="e#6059#6261#0" expanded="false" />
+                <element signature="e#7331#7953#0" expanded="false" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="package.json" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/package.json">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="5" column="22" lean-forward="false" selection-start-line="5" selection-start-column="22" selection-end-line="5" selection-end-column="22" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -56,8 +42,8 @@
       <file leaf-file-name="common.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/utilities/common.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="434">
-              <caret line="101" column="10" lean-forward="false" selection-start-line="101" selection-start-column="10" selection-end-line="101" selection-end-column="10" />
+            <state relative-caret-position="222">
+              <caret line="29" column="0" lean-forward="true" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -248,7 +234,7 @@
       <workItem from="1525776545251" duration="1077000" />
       <workItem from="1525777792983" duration="9944000" />
       <workItem from="1525842336796" duration="1155000" />
-      <workItem from="1525843533849" duration="2516000" />
+      <workItem from="1525843533849" duration="3356000" />
     </task>
     <task id="LOCAL-00001" summary="init commit">
       <created>1518339563955</created>
@@ -341,11 +327,18 @@
       <option name="project" value="LOCAL" />
       <updated>1525787271221</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="added up-/download .csv files">
+      <created>1525846099114</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1525846099114</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="56950000" />
+    <option name="totallyTimeSpent" value="57790000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1920" y="459" width="1366" height="741" extended-state="6" />
@@ -392,7 +385,8 @@
     <MESSAGE value="improve results view" />
     <MESSAGE value="a little changes in ui structure" />
     <MESSAGE value="small style fixes" />
-    <option name="LAST_COMMIT_MESSAGE" value="small style fixes" />
+    <MESSAGE value="added up-/download .csv files" />
+    <option name="LAST_COMMIT_MESSAGE" value="added up-/download .csv files" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -439,17 +433,16 @@
         <state relative-caret-position="954">
           <caret line="54" column="0" lean-forward="false" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
           <folding>
-            <element signature="e#0#41#0" expanded="true" />
-            <element signature="e#1005#1131#0" expanded="false" />
-            <element signature="e#1155#1191#0" expanded="false" />
-            <element signature="e#1242#1505#0" expanded="false" />
-            <element signature="e#1541#1912#0" expanded="false" />
-            <element signature="e#2114#2527#0" expanded="false" />
-            <element signature="e#4159#4248#0" expanded="false" />
-            <element signature="e#4329#4598#0" expanded="false" />
-            <element signature="e#4613#4896#0" expanded="false" />
-            <element signature="e#4911#5220#0" expanded="false" />
-            <element signature="e#6507#7129#0" expanded="false" />
+            <element signature="e#1274#1310#0" expanded="false" />
+            <element signature="e#1361#1624#0" expanded="false" />
+            <element signature="e#1660#2031#0" expanded="false" />
+            <element signature="e#2233#2646#0" expanded="false" />
+            <element signature="e#4502#4591#0" expanded="false" />
+            <element signature="e#4672#4941#0" expanded="false" />
+            <element signature="e#4956#5230#0" expanded="false" />
+            <element signature="e#5245#5537#0" expanded="false" />
+            <element signature="e#6059#6261#0" expanded="false" />
+            <element signature="e#7331#7953#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -779,14 +772,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/utilities/common.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="434">
-          <caret line="101" column="10" lean-forward="false" selection-start-line="101" selection-start-column="10" selection-end-line="101" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/data.csv">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
@@ -803,22 +788,29 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/utilities/common.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="222">
+          <caret line="29" column="0" lean-forward="true" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/DataUI.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2952">
-          <caret line="264" column="40" lean-forward="false" selection-start-line="264" selection-start-column="40" selection-end-line="264" selection-end-column="40" />
+        <state relative-caret-position="18">
+          <caret line="4" column="48" lean-forward="false" selection-start-line="4" selection-start-column="48" selection-end-line="4" selection-end-column="48" />
           <folding>
-            <element signature="e#0#41#0" expanded="true" />
-            <element signature="e#1005#1131#0" expanded="false" />
-            <element signature="e#1155#1191#0" expanded="false" />
-            <element signature="e#1242#1505#0" expanded="false" />
-            <element signature="e#1541#1912#0" expanded="false" />
-            <element signature="e#2114#2527#0" expanded="false" />
-            <element signature="e#4159#4248#0" expanded="false" />
-            <element signature="e#4329#4598#0" expanded="false" />
-            <element signature="e#4613#4896#0" expanded="false" />
-            <element signature="e#4911#5220#0" expanded="false" />
-            <element signature="e#6507#7129#0" expanded="false" />
+            <element signature="e#1274#1310#0" expanded="false" />
+            <element signature="e#1361#1624#0" expanded="false" />
+            <element signature="e#1660#2031#0" expanded="false" />
+            <element signature="e#2233#2646#0" expanded="false" />
+            <element signature="e#4502#4591#0" expanded="false" />
+            <element signature="e#4672#4941#0" expanded="false" />
+            <element signature="e#4956#5230#0" expanded="false" />
+            <element signature="e#5245#5537#0" expanded="false" />
+            <element signature="e#6059#6261#0" expanded="false" />
+            <element signature="e#7331#7953#0" expanded="false" />
           </folding>
         </state>
       </provider>

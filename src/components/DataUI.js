@@ -18,6 +18,7 @@ import {
   download
 } from '../utilities/common';
 
+NumericInput.style.input.width = 100;
 
 class DataUI extends Component {
   constructor(props) {
@@ -36,6 +37,8 @@ class DataUI extends Component {
       columns: this.generateColumns(2),
       dimension: 2,
       countOfRows: data.length || 5,
+      minValue: -50,
+      maxValue: 50,
       countOfClusters,
       kmeansResults,
       hierarchicalResults,
@@ -50,8 +53,8 @@ class DataUI extends Component {
 
   _generateData = () => {
     this.setState(
-      ({ dimension, countOfRows }) =>
-        ({ data: generateData(dimension, countOfRows) })
+      ({ dimension, countOfRows, minValue, maxValue }) =>
+        ({ data: generateData(dimension, countOfRows, minValue, maxValue) })
     );
   };
 
@@ -182,6 +185,12 @@ class DataUI extends Component {
     download('cluster-data.csv', output)
   };
 
+  handleMinValue = (value) =>
+    this.setState({ minValue: +value });
+
+  handleMaxValue = (value) =>
+    this.setState({ maxValue: +value });
+
   render() {
     const {
       rowGetter,
@@ -193,12 +202,16 @@ class DataUI extends Component {
       _generateData,
       uploadFile,
       saveToFile,
+      handleMinValue,
+      handleMaxValue,
       state: {
         data,
         columns,
         dimension,
         countOfRows,
         countOfClusters,
+        minValue,
+        maxValue,
         hierarchicalResults,
         kmeansResults
       }
@@ -224,7 +237,7 @@ class DataUI extends Component {
                 />
               </label>
               <label className="numeric-input">
-                count of objects
+                objects
                 <NumericInput
                   value={countOfRows}
                   min={2}
@@ -233,12 +246,28 @@ class DataUI extends Component {
                 />
               </label>
               <label className="numeric-input">
-                count of clusters(kmeans)
+                clusters
                 <NumericInput
                   value={countOfClusters}
                   min={2}
                   max={data.length || 2}
                   onChange={onCountOfClustersChange}
+                />
+              </label>
+              <label className="numeric-input">
+                min
+                <NumericInput
+                  value={minValue}
+                  onChange={handleMinValue}
+                />
+              </label>
+              <label className="numeric-input">
+                max
+                <NumericInput
+                  value={maxValue}
+                  onChange={handleMaxValue}
+                  max={1000}
+                  style={{ width: 20 }}
                 />
               </label>
               <button
