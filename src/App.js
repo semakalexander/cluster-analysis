@@ -11,12 +11,17 @@ import './style/App.css';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 class App extends Component {
-  state = {
-    data: generateData(),
-    options: {
-      countOfClusters: 3
-    }
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      data: generateData(),
+      options: {
+        countOfClusters: 3,
+        centroids: []
+      }
+    };
+  }
 
   setData = (data, options) => this.setState({ data, options });
 
@@ -39,9 +44,11 @@ class App extends Component {
                 <Tab>Data</Tab>
                 <Tab>Visualization</Tab>
               </TabList>
+
               <TabPanel forceRender>
                 <DataUI data={data} setData={setData} />
               </TabPanel>
+
               <TabPanel>
                 <Tabs>
                   <TabList>
@@ -52,6 +59,7 @@ class App extends Component {
                   <TabPanel>
                     <Kmeans data={data} options={options} />
                   </TabPanel>
+
                   <TabPanel>
                     <Hierarchical data={data} />
                   </TabPanel>

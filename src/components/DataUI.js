@@ -23,6 +23,10 @@ import UploadIcon from '../icons/upload-button.svg'
 NumericInput.style.input.width = 100;
 NumericInput.style.input.textAlign = 'center';
 
+const Label = ({ children }) => (
+  <span style={{ marginBottom: 4 }}>{children}</span>
+);
+
 class DataUI extends Component {
   constructor(props) {
     super(props);
@@ -42,6 +46,7 @@ class DataUI extends Component {
       countOfRows: data.length || 5,
       minValue: -50,
       maxValue: 50,
+      centroids: '',
       countOfClusters,
       kmeansResults,
       hierarchicalResults,
@@ -122,8 +127,8 @@ class DataUI extends Component {
 
   };
 
-  compute = (data, { countOfClusters }) => ({
-    kmeansResults: kmeans(data, { k: countOfClusters }),
+  compute = (data, { countOfClusters, centroids }) => ({
+    kmeansResults: kmeans(data, { k: countOfClusters, centroids }),
     hierarchicalResults: agglo(data).reverse()
   });
 
@@ -135,14 +140,27 @@ class DataUI extends Component {
       },
       state: {
         data,
-        countOfClusters
+        countOfClusters,
+        centroids
       }
     } = this;
 
+    const parsedCentroids = [
+      ...new Set(
+        centroids
+          .split(/[,;\s]/)
+          .filter(el => el.match(/\S/) && !isNaN(+el) && +el >= 0 && +el < data.length)
+          .map(el => +el)
+      )
+    ];
+    const options = {
+      countOfClusters,
+      centroids: parsedCentroids
+    };
 
-    setData(data, { countOfClusters });
+    setData(data, options);
 
-    this.setState(compute(data, { countOfClusters }));
+    this.setState(compute(data, options));
   };
 
   onCountOfClustersChange = (value) => {
@@ -190,6 +208,9 @@ class DataUI extends Component {
   handleMaxValue = (value) =>
     this.setState({ maxValue: +value });
 
+  handleCentroids = ({ target: { value } }) =>
+    this.setState({centroids: value});
+
   render() {
     const {
       rowGetter,
@@ -203,6 +224,7 @@ class DataUI extends Component {
       saveToFile,
       handleMinValue,
       handleMaxValue,
+      handleCentroids,
       state: {
         data,
         columns,
@@ -212,10 +234,12 @@ class DataUI extends Component {
         minValue,
         maxValue,
         hierarchicalResults,
-        kmeansResults
+        kmeansResults,
+        centroids
       }
     } = this;
 
+    console.log('hi', hierarchicalResults)
     return (
       <Tabs>
         <TabList>
@@ -226,7 +250,7 @@ class DataUI extends Component {
         <TabPanel>
           <div className="number-inputs">
             <label className="numeric-input">
-              <span style={{ marginBottom: 4 }}>dimension</span>
+              <Label>dimension</Label>
               <NumericInput
                 value={dimension}
                 min={1}
@@ -235,7 +259,7 @@ class DataUI extends Component {
               />
             </label>
             <label className="numeric-input">
-              <span style={{ marginBottom: 4 }}>objects</span>
+              <Label>objects</Label>
               <NumericInput
                 value={countOfRows}
                 min={2}
@@ -244,7 +268,7 @@ class DataUI extends Component {
               />
             </label>
             <label className="numeric-input">
-              <span style={{ marginBottom: 4 }}>clusters</span>
+              <Label>clusters</Label>
               <NumericInput
                 value={countOfClusters}
                 min={2}
@@ -253,19 +277,27 @@ class DataUI extends Component {
               />
             </label>
             <label className="numeric-input">
-              <span style={{ marginBottom: 4 }}>min</span>
+              <Label>min</Label>
               <NumericInput
                 value={minValue}
                 onChange={handleMinValue}
               />
             </label>
             <label className="numeric-input">
-              <span style={{ marginBottom: 4 }}>max</span>
+              <Label>max</Label>
               <NumericInput
                 value={maxValue}
                 onChange={handleMaxValue}
                 max={1000}
                 style={{ width: 20 }}
+              />
+            </label>
+            <label className="numeric-input">
+              <Label>centroids</Label>
+              <input
+                type="text"
+                value={centroids}
+                onChange={handleCentroids}
               />
             </label>
             <button
@@ -293,6 +325,7 @@ class DataUI extends Component {
                 hidden
               />
               <img
+                alt="upload"
                 src={UploadIcon}
                 width={35}
                 height={35}
@@ -304,6 +337,7 @@ class DataUI extends Component {
               onClick={saveToFile}
             >
               <img
+                alt="download"
                 src={DownloadIcon}
                 width={35}
                 height={35}
@@ -337,7 +371,7 @@ class DataUI extends Component {
             <TabPanel>
               {
                 hierarchicalResults.length && (
-                  <Results results={hierarchicalResults} />
+                  <Results results={hierarchicalResults[countOfClusters - 1]} />
                 )
               }
             </TabPanel>

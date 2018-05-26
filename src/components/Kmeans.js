@@ -39,7 +39,7 @@ class Kmeans extends Component {
       data = [],
       options: {
         countOfClusters,
-        // centroids,
+        centroids,
       },
     } = props;
 
@@ -68,6 +68,9 @@ class Kmeans extends Component {
     let {
       props: {
         data,
+        options:{
+          centroids: startCentroids
+        }
       },
       state: {
         countOfClusters
@@ -76,7 +79,12 @@ class Kmeans extends Component {
 
     data = updatedData || data;
 
-    const { clusters, centroids } = kmeans(data, { k: countOfClusters });
+    const options = {
+      k: countOfClusters,
+      centroids: startCentroids
+    };
+
+    const { clusters, centroids } = kmeans(data, options);
 
     const colors =
       clusters.length > mainColors.length ?
@@ -106,8 +114,6 @@ class Kmeans extends Component {
     }));
   };
 
-
-  // todo added features to kmeans (centroids etc)
 
   handleCountOfClusters = v =>
     this.setState(

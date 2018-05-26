@@ -2,7 +2,11 @@ import distances from './distances';
 import { isString, shuffle } from './common';
 import { toJson } from './common';
 
-const randomCentroids = (vectors, k) => shuffle(vectors).slice(0, k);
+const randomCentroids = (vectors, k) =>
+  shuffle(vectors).slice(0, k);
+
+const fillCentroids = (data, centroidsIndexes) =>
+  centroidsIndexes.reduce((arr, index) => [...arr, data[index]], []);
 
 const classify = (vector, centroids, distance) => {
   let min = distance(vector, centroids[0]);
@@ -23,11 +27,17 @@ const kmeans = (vectors, options = {}, snapshotCb, snapshotPeriod) => {
   let {
     k = Math.max(2, Math.ceil(Math.sqrt(vectors.length / 2))),
     distance = 'euclidean',
-    centroids = randomCentroids(vectors, k)
+    centroids
   } = options;
 
   if (isString(distance)) {
     distance = distances[distance];
+  }
+
+  if (!centroids || !centroids.length) {
+    centroids = randomCentroids(vectors, k);
+  } else {
+    centroids = fillCentroids(vectors, centroids);
   }
 
 
