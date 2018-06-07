@@ -9,7 +9,7 @@ const Result = ({ result, keyPrefix }) => (
       result.clusters.map((cluster, i) => (
         <div key={`${keyPrefix}-results-cluster-${cluster}`}>
           <h5 style={clusterHeaderStyle}>Cluster #{i + 1}</h5>
-          <p style={{ fontSize: 10 }}>
+          <p>
             {
               cluster.map(el => Array.isArray(el) ? `(${el.join(',')})` : el).join(', ')
             }

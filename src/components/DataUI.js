@@ -27,6 +27,28 @@ const Label = ({ children }) => (
   <span style={{ marginBottom: 4 }}>{children}</span>
 );
 
+const prepareData = data => {
+  let ids = data.map((v, i) => `#${i}`);
+  let preparedData = data;
+
+
+  if (data.some(el => el.some(v => isNaN(+v)))) {
+    ids = data.map(v => v[0]);
+    preparedData = data
+      .map(value =>
+        value
+          .slice(1)
+          .map(val =>
+            typeof val === 'string' ?
+              parseFloat(val.replace(/"/g, '')) :
+              val
+          )
+      );
+  }
+
+  return { preparedData, ids };
+};
+
 class DataUI extends Component {
   constructor(props) {
     super(props);
@@ -35,10 +57,12 @@ class DataUI extends Component {
 
     const countOfClusters = 3;
 
+    const { preparedData, ids } = prepareData(data);
+
     const {
       kmeansResults,
       hierarchicalResults
-    } = this.compute(data, { countOfClusters });
+    } = this.compute(preparedData, { countOfClusters }, ids);
 
     this.state = {
       columns: this.generateColumns(2),
@@ -70,8 +94,14 @@ class DataUI extends Component {
     let data = [...this.state.data];
     for (let i = fromRow; i <= toRow; i++) {
       Object.keys(updated).forEach(key => {
-        const value = +updated[key];
-        data[i][key] = isNaN(value) ? 0 : value;
+        if (key === '0') {
+          data[i][key] = updated[key];
+        }
+        else {
+          const value = +updated[key];
+
+          data[i][key] = isNaN(value) ? 0 : value;
+        }
       });
     }
 
@@ -127,43 +157,31 @@ class DataUI extends Component {
 
   };
 
-  compute = (data, { countOfClusters, centroids }) => {
-    let ids = [];
-    let updatedData = data;
+  compute = (preparedData, { countOfClusters, centroids }, ids) => {
+    let dict = new Map();
 
-    let dict = null;
+    preparedData.forEach((data, i) => dict.set(data, ids[i]));
 
-    if (isNaN(+data[0][0])) {
-      ids = data.map(v => v[0]);
-      updatedData = data.map(v => v.slice(1));
+    console.log(dict);
 
 
-      dict = new Map();
+    let kmeansResults = kmeans(preparedData, { k: countOfClusters, centroids });
+    let hierarchicalResults = agglo(preparedData).reverse()[countOfClusters - 1];
 
-      updatedData.forEach((data, i) => dict.set(data, ids[i]));
+    kmeansResults = {
+      clusters: kmeansResults.clusters
+        .map(cluster =>
+          cluster.map(el => dict.get(el))
+        )
+    };
 
-      console.log(dict);
-    }
-
-    let kmeansResults = kmeans(updatedData, { k: countOfClusters, centroids });
-    let hierarchicalResults = agglo(updatedData).reverse()[countOfClusters - 1];
-
-    if (dict) {
-      kmeansResults = {
-        clusters: kmeansResults.clusters
-          .map(cluster =>
-            cluster.map(el => dict.get(el))
-          )
-      };
-
-      hierarchicalResults = {
-        clusters: hierarchicalResults.clusters
-          .map(cluster =>
-            cluster.map(el => dict.get(el))
-          ),
-        source: hierarchicalResults.source
-      };
-    }
+    hierarchicalResults = {
+      clusters: hierarchicalResults.clusters
+        .map(cluster =>
+          cluster.map(el => dict.get(el))
+        ),
+      source: hierarchicalResults.source
+    };
 
     return ({
       kmeansResults,
@@ -184,22 +202,25 @@ class DataUI extends Component {
       }
     } = this;
 
+    const { preparedData, ids } = prepareData(data);
+
     const parsedCentroids = [
       ...new Set(
         centroids
           .split(/[,;\s]/)
-          .filter(el => el.match(/\S/) && !isNaN(+el) && +el >= 0 && +el < data.length)
+          .filter(el => el.match(/\S/) && !isNaN(+el) && +el >= 0 && +el < preparedData.length)
           .map(el => +el)
       )
     ];
+
     const options = {
       countOfClusters,
       centroids: parsedCentroids
     };
 
-    setData(data, options);
+    setData(preparedData, options);
 
-    this.setState(compute(data, options));
+    this.setState(compute(preparedData, options, ids));
   };
 
   onCountOfClustersChange = (value) => {
