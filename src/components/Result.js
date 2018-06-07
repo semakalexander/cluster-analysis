@@ -11,7 +11,7 @@ const Result = ({ result, keyPrefix }) => (
           <h5 style={clusterHeaderStyle}>Cluster #{i + 1}</h5>
           <p style={{ fontSize: 10 }}>
             {
-              cluster.map(el => `(${el.join(',')})`).join(', ')
+              cluster.map(el => Array.isArray(el) ? `(${el.join(',')})` : el).join(', ')
             }
           </p>
         </div>

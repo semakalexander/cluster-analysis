@@ -5,13 +5,12 @@ import Result from './Result';
 const containerStyle = { overflowY: 'scroll', height: 512 };
 
 const Results = ({ results }) => {
-  let keyPrefix = 'hierarchical';
+  const isHierarchical = results.source;
 
-  const isHierarchical = Array.isArray(results);
+  let keyPrefix = isHierarchical ? 'hierarchical' : 'kmeans';
 
-  if (!isHierarchical) {
+  if (!Array.isArray(results)) {
     results = [results];
-    keyPrefix = 'kmeans';
   }
 
   return (

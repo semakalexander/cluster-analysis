@@ -127,10 +127,49 @@ class DataUI extends Component {
 
   };
 
-  compute = (data, { countOfClusters, centroids }) => ({
-    kmeansResults: kmeans(data, { k: countOfClusters, centroids }),
-    hierarchicalResults: agglo(data).reverse()
-  });
+  compute = (data, { countOfClusters, centroids }) => {
+    let ids = [];
+    let updatedData = data;
+
+    let dict = null;
+
+    if (isNaN(+data[0][0])) {
+      ids = data.map(v => v[0]);
+      updatedData = data.map(v => v.slice(1));
+
+
+      dict = new Map();
+
+      updatedData.forEach((data, i) => dict.set(data, ids[i]));
+
+      console.log(dict);
+    }
+
+    let kmeansResults = kmeans(updatedData, { k: countOfClusters, centroids });
+    let hierarchicalResults = agglo(updatedData).reverse()[countOfClusters - 1];
+
+    if (dict) {
+      kmeansResults = {
+        clusters: kmeansResults.clusters
+          .map(cluster =>
+            cluster.map(el => dict.get(el))
+          )
+      };
+
+      hierarchicalResults = {
+        clusters: hierarchicalResults.clusters
+          .map(cluster =>
+            cluster.map(el => dict.get(el))
+          ),
+        source: hierarchicalResults.source
+      };
+    }
+
+    return ({
+      kmeansResults,
+      hierarchicalResults
+    });
+  };
 
   setData = () => {
     const {
@@ -174,6 +213,7 @@ class DataUI extends Component {
         headers,
         data
       } = parseCSV(reader.result);
+
       this.setState({
         columns: headers.map((h, i) => ({
           key: i,
@@ -209,7 +249,7 @@ class DataUI extends Component {
     this.setState({ maxValue: +value });
 
   handleCentroids = ({ target: { value } }) =>
-    this.setState({centroids: value});
+    this.setState({ centroids: value });
 
   render() {
     const {
@@ -239,7 +279,6 @@ class DataUI extends Component {
       }
     } = this;
 
-    console.log('hi', hierarchicalResults)
     return (
       <Tabs>
         <TabList>
@@ -370,8 +409,8 @@ class DataUI extends Component {
             </TabPanel>
             <TabPanel>
               {
-                hierarchicalResults.length && (
-                  <Results results={hierarchicalResults[countOfClusters - 1]} />
+                hierarchicalResults.clusters && (
+                  <Results results={hierarchicalResults} />
                 )
               }
             </TabPanel>
