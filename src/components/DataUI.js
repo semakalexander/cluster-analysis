@@ -36,17 +36,20 @@ const prepareData = data => {
     ids = data.map(v => v[0]);
     preparedData = data
       .map(value =>
-        value
-          .slice(1)
-          .map(val =>
-            typeof val === 'string' ?
-              parseFloat(val.replace(/"/g, '')) :
-              val
-          )
+        value.slice(1).map(val => parseValue(val, 1))
       );
   }
 
   return { preparedData, ids };
+};
+
+const parseValue = (val, index) => {
+  if (typeof val === 'string') {
+    const newVal = val.replace(/"/g, '');
+    return index === 0 ? newVal : parseFloat(newVal);
+  }
+
+  return val;
 };
 
 class DataUI extends Component {
@@ -76,7 +79,6 @@ class DataUI extends Component {
       hierarchicalResults,
       data
     };
-
   }
 
   _generateData = () => {
@@ -230,10 +232,24 @@ class DataUI extends Component {
   uploadFile = (e) => {
     const reader = new FileReader();
     reader.onload = () => {
-      const {
+      let {
         headers,
         data
       } = parseCSV(reader.result);
+
+      const headersFilterIndexes = data[0]
+        .map(parseValue)
+        .reduce((indexes, col, i) =>
+            ((i === 0) || !isNaN(+col)) ? [...indexes, i] : indexes,
+          []
+        );
+
+      headers = headers.filter((el, i) => headersFilterIndexes.includes(i));
+      data = data.map(row =>
+        row
+          .map(parseValue)
+          .filter((col, i) => (i === 0) || !isNaN(+col))
+      );
 
       this.setState({
         columns: headers.map((h, i) => ({
