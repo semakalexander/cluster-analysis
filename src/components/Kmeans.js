@@ -39,7 +39,6 @@ class Kmeans extends Component {
       data = [],
       options: {
         countOfClusters,
-        centroids,
       },
     } = props;
 

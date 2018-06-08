@@ -30,6 +30,8 @@ const generateData = (dim = 2, length = 50, min = -100, max = 100) => {
 
   for (let i = 0; i < length; i++) {
     data.push([]);
+    data[i].push(i);
+
     for (let j = 0; j < dim; j++) {
       data[i].push(randomInt(min, max));
     }

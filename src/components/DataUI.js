@@ -27,25 +27,10 @@ const Label = ({ children }) => (
   <span style={{ marginBottom: 4 }}>{children}</span>
 );
 
-const prepareData = data => {
-  let ids = data.map((v, i) => `#${i}`);
-  let preparedData = data;
-
-
-  if (data.some(el => el.some(v => isNaN(+v)))) {
-    ids = data.map(v => v[0]);
-    preparedData = data
-      .map(value =>
-        value.slice(1).map(val => parseValue(val, 1))
-      );
-  }
-
-  return { preparedData, ids };
-};
 
 const parseValue = (val, index) => {
   if (typeof val === 'string') {
-    const newVal = val.replace(/"/g, '');
+    const newVal = val.replace(/"/g, '').replace(/(NA)|(NULL)/g, '0');
     return index === 0 ? newVal : parseFloat(newVal);
   }
 
@@ -60,7 +45,7 @@ class DataUI extends Component {
 
     const countOfClusters = 3;
 
-    const { preparedData, ids } = prepareData(data);
+    const { preparedData, ids } = this.prepareData(data);
 
     const {
       kmeansResults,
@@ -74,12 +59,35 @@ class DataUI extends Component {
       minValue: -50,
       maxValue: 50,
       centroids: '',
+      isFirstColumnId: true,
       countOfClusters,
       kmeansResults,
       hierarchicalResults,
       data
     };
   }
+
+  prepareData = data => {
+    const {
+      state: {
+        isFirstColumnId = true
+      } = {}
+    } = this;
+
+    let ids = data.map((v, i) => `#${i}`);
+    let preparedData = data;
+
+
+    if (isFirstColumnId) {
+      ids = data.map(v => v[0]);
+      preparedData = data
+        .map(value =>
+          value.slice(1).map(val => parseValue(val, 1))
+        );
+    }
+
+    return { preparedData, ids };
+  };
 
   _generateData = () => {
     this.setState(
@@ -130,11 +138,18 @@ class DataUI extends Component {
   };
 
   generateColumns = (dimension = this.state.dimension) =>
-    [...new Array(dimension)].map((el, i) => ({
-      key: i,
-      name: i,
-      editable: true
-    }));
+    [
+      {
+        key: 0,
+        name: 'id',
+        editable: true
+      },
+      ...[...new Array(dimension)].map((el, i) => ({
+        key: i + 1,
+        name: i + 1,
+        editable: true
+      }))
+    ];
 
   onCountOfRowsChange = value => {
     const {
@@ -147,9 +162,13 @@ class DataUI extends Component {
 
     let data = [...oldData];
 
+    let startId = data[data.length - 1][0];
+
+    startId = !isNaN(+startId) ? +startId + 1 : `#${startId}`;
+
     if (value > countOfRows) {
-      for (let i = 0; i < value - countOfRows; i++) {
-        data.push(generateZeroArray(dimension));
+      for (let i = 0; i < value - countOfRows; i++, startId++) {
+        data.push([startId, ...generateZeroArray(dimension)]);
       }
     } else {
       data = data.slice(0, value);
@@ -163,9 +182,6 @@ class DataUI extends Component {
     let dict = new Map();
 
     preparedData.forEach((data, i) => dict.set(data, ids[i]));
-
-    console.log(dict);
-
 
     let kmeansResults = kmeans(preparedData, { k: countOfClusters, centroids });
     let hierarchicalResults = agglo(preparedData).reverse()[countOfClusters - 1];
@@ -194,6 +210,7 @@ class DataUI extends Component {
   setData = () => {
     const {
       compute,
+      prepareData,
       props: {
         setData,
       },
@@ -244,12 +261,26 @@ class DataUI extends Component {
           []
         );
 
-      headers = headers.filter((el, i) => headersFilterIndexes.includes(i));
-      data = data.map(row =>
-        row
-          .map(parseValue)
-          .filter((col, i) => (i === 0) || !isNaN(+col))
-      );
+      headers = headers
+        .filter((el, i) => headersFilterIndexes.includes(i))
+        .map(h => h.replace(/"/g, ''));
+
+      if (!headers[0].trim()) {
+        headers[0] = 'id';
+      }
+
+      const maxDimension = data
+        .reduce((max, cur) =>
+          cur.length > max ? cur.length : max, data[0].length
+        );
+
+      data = data
+        .filter(el => el.length === maxDimension)
+        .map(row =>
+          row
+            .map(parseValue)
+            .filter((col, i) => (i === 0) || !isNaN(+col))
+        );
 
       this.setState({
         columns: headers.map((h, i) => ({
@@ -288,6 +319,9 @@ class DataUI extends Component {
   handleCentroids = ({ target: { value } }) =>
     this.setState({ centroids: value });
 
+  toggleCheckbox = () =>
+    this.setState(({ isFirstColumnId }) => ({ isFirstColumnId: !isFirstColumnId }));
+
   render() {
     const {
       rowGetter,
@@ -302,6 +336,7 @@ class DataUI extends Component {
       handleMinValue,
       handleMaxValue,
       handleCentroids,
+      toggleCheckbox,
       state: {
         data,
         columns,
@@ -312,7 +347,8 @@ class DataUI extends Component {
         maxValue,
         hierarchicalResults,
         kmeansResults,
-        centroids
+        centroids,
+        isFirstColumnId
       }
     } = this;
 
@@ -421,11 +457,23 @@ class DataUI extends Component {
             </div>
           </div>
 
+          <div style={{ marginBottom: 10 }}>
+            <label>
+              <input
+                type="checkbox"
+                checked={isFirstColumnId}
+                onChange={toggleCheckbox}
+              />
+              first column is id
+            </label>
+
+          </div>
+
           <ReactDataGrid
             columns={columns}
             rowGetter={rowGetter}
             rowsCount={data.length}
-            minHeight={512}
+            minHeight={500}
             onGridRowsUpdated={updateRows}
             enableCellSelect
           />

@@ -11,6 +11,8 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-right: 25px;
+  margin-left: 25px;
 }
 
 .plot {
