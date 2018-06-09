@@ -14,7 +14,8 @@ import {
   generateZeroArray,
   parseCSV,
   unparse,
-  download
+  download,
+  randomCentroids
 } from '../utilities/common';
 
 import DownloadIcon from '../icons/download-button.svg';
@@ -183,7 +184,7 @@ class DataUI extends Component {
 
     preparedData.forEach((data, i) => dict.set(data, ids[i]));
 
-    let kmeansResults = kmeans(preparedData, { k: countOfClusters, centroids });
+    let kmeansResults = kmeans(preparedData, { k: countOfClusters, centroids, ids });
     let hierarchicalResults = agglo(preparedData).reverse()[countOfClusters - 1];
 
     kmeansResults = {
@@ -223,18 +224,19 @@ class DataUI extends Component {
 
     const { preparedData, ids } = prepareData(data);
 
-    const parsedCentroids = [
+    const parsedCentroids = centroids.length ? [
       ...new Set(
         centroids
           .split(/[,;\s]/)
           .filter(el => el.match(/\S/) && !isNaN(+el) && +el >= 0 && +el < preparedData.length)
           .map(el => +el)
       )
-    ];
+    ] : randomCentroids(preparedData, countOfClusters).map(c => preparedData.indexOf(c));
 
     const options = {
       countOfClusters,
-      centroids: parsedCentroids
+      centroids: parsedCentroids,
+      ids
     };
 
     setData(preparedData, options);

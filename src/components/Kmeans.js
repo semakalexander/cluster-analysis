@@ -39,12 +39,14 @@ class Kmeans extends Component {
       data = [],
       options: {
         countOfClusters,
+        centroids = []
       },
     } = props;
 
     this.state = {
       data: serialize(data),
       centroidsData: [],
+      startCentroids: centroids,
       countOfClusters,
       width: 1024,
       height: 500,
@@ -67,12 +69,13 @@ class Kmeans extends Component {
     let {
       props: {
         data,
-        options:{
-          centroids: startCentroids
+        options: {
+          ids
         }
       },
       state: {
-        countOfClusters
+        startCentroids,
+        countOfClusters,
       }
     } = this;
 
@@ -80,7 +83,8 @@ class Kmeans extends Component {
 
     const options = {
       k: countOfClusters,
-      centroids: startCentroids
+      centroids: startCentroids,
+      ids
     };
 
     const { clusters, centroids } = kmeans(data, options);
@@ -116,7 +120,7 @@ class Kmeans extends Component {
 
   handleCountOfClusters = v =>
     this.setState(
-      () => ({ countOfClusters: v < 1 ? 1 : v }),
+      () => ({ countOfClusters: v < 1 ? 1 : v, startCentroids: [] }),
       () => this.cUpdate()
     );
 

@@ -1,9 +1,7 @@
 import distances from './distances';
-import { isString, shuffle } from './common';
-import { toJson } from './common';
+import { isString } from './common';
+import { toJson, randomCentroids } from './common';
 
-const randomCentroids = (vectors, k) =>
-  shuffle(vectors).slice(0, k);
 
 const fillCentroids = (data, centroidsIndexes) =>
   centroidsIndexes.reduce((arr, index) => [...arr, data[index]], []);
@@ -27,7 +25,8 @@ const kmeans = (vectors, options = {}, snapshotCb, snapshotPeriod) => {
   let {
     k = Math.max(2, Math.ceil(Math.sqrt(vectors.length / 2))),
     distance = 'euclidean',
-    centroids
+    centroids,
+    ids
   } = options;
 
   if (isString(distance)) {
@@ -40,6 +39,12 @@ const kmeans = (vectors, options = {}, snapshotCb, snapshotPeriod) => {
     centroids = fillCentroids(vectors, centroids);
   }
 
+  if (!ids)
+    console.log('номери початкових центроїдів:', centroids.map(c => vectors.indexOf(c) + 1).join(', '));
+  else
+    console.log('назви початкових центроїдів:', centroids.map(c => ids[vectors.indexOf(c)]).join(', '));
+
+  console.log('початкові центроїди:', centroids.map(c => `[${c.join(',')}]`).join(', '));
 
   const assignment = new Array(vectors.length);
   const clusters = new Array(k);
@@ -93,6 +98,7 @@ const kmeans = (vectors, options = {}, snapshotCb, snapshotPeriod) => {
     }
   }
 
+  console.log('обчислені центроїди:', centroids.map(c => `[${c.join(',')}]`).join(', '));
   return { clusters, centroids, k };
 };
 

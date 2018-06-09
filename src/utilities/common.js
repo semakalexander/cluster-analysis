@@ -6,7 +6,7 @@ const isExist = v => typeof v !== 'undefined';
 
 const randomInt = (min = 0, max = 1) => Math.floor(Math.random() * (max - min + 1)) + min;
 
-const shuffle = arr => arr.slice(0).sort(() => Math.ceil(Math.random() - 0.5));
+const shuffle = arr => [...arr].sort(() =>.5 -Math.random());
 
 const toJson = o => JSON.stringify(o, null, 2);
 
@@ -85,6 +85,9 @@ const download =(filename, csv) => {
   }
 };
 
+const randomCentroids = (vectors, k) =>
+  shuffle(vectors).slice(0, k);
+
 export {
   sum,
   isString,
@@ -101,5 +104,6 @@ export {
   generateZeroArray,
   parseCSV,
   unparse,
-  download
+  download,
+  randomCentroids
 }
