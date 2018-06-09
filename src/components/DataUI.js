@@ -249,54 +249,56 @@ class DataUI extends Component {
   };
 
   uploadFile = (e) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      let {
-        headers,
-        data
-      } = parseCSV(reader.result);
+    if(e.target.files.length) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        let {
+          headers,
+          data
+        } = parseCSV(reader.result);
 
-      const headersFilterIndexes = data[0]
-        .map(parseValue)
-        .reduce((indexes, col, i) =>
-            ((i === 0) || !isNaN(+col)) ? [...indexes, i] : indexes,
-          []
-        );
+        const headersFilterIndexes = data[0]
+          .map(parseValue)
+          .reduce((indexes, col, i) =>
+              ((i === 0) || !isNaN(+col)) ? [...indexes, i] : indexes,
+            []
+          );
 
-      headers = headers
-        .filter((el, i) => headersFilterIndexes.includes(i))
-        .map(h => h.replace(/"/g, ''));
+        headers = headers
+          .filter((el, i) => headersFilterIndexes.includes(i))
+          .map(h => h.replace(/"/g, ''));
 
-      if (!headers[0].trim()) {
-        headers[0] = 'id';
-      }
+        if (!headers[0].trim()) {
+          headers[0] = 'id';
+        }
 
-      const maxDimension = data
-        .reduce((max, cur) =>
-          cur.length > max ? cur.length : max, data[0].length
-        );
+        const maxDimension = data
+          .reduce((max, cur) =>
+            cur.length > max ? cur.length : max, data[0].length
+          );
 
-      data = data
-        .filter(el => el.length === maxDimension)
-        .map(row =>
-          row
-            .map(parseValue)
-            .filter((col, i) => (i === 0) || !isNaN(+col))
-        );
+        data = data
+          .filter(el => el.length === maxDimension)
+          .map(row =>
+            row
+              .map(parseValue)
+              .filter((col, i) => (i === 0) || !isNaN(+col))
+          );
 
-      this.setState({
-        columns: headers.map((h, i) => ({
-          key: i,
-          name: h,
-          editable: true
-        })),
-        countOfRows: data.length,
-        dimension: data[0].length,
-        data,
-      });
-    };
+        this.setState({
+          columns: headers.map((h, i) => ({
+            key: i,
+            name: h,
+            editable: true
+          })),
+          countOfRows: data.length,
+          dimension: data[0].length,
+          data,
+        });
+      };
 
-    reader.readAsText(e.target.files[0]);
+      reader.readAsText(e.target.files[0]);
+    }
   };
 
   saveToFile = () => {

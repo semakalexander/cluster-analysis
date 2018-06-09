@@ -7,12 +7,12 @@ const objectStyle = { fontSize: 14 };
 const Result = ({ result, keyPrefix }) => (
   <div style={borderStyle}>
     {
-      result.clusters.map((cluster, i) => (
+      result.clusters.sort((a, b) => a.sort()[0] > b.sort()[0]).map((cluster, i) => (
         <div key={`${keyPrefix}-results-cluster-${cluster}`}>
           <h4 style={clusterHeaderStyle}>Cluster #{i + 1}</h4>
           <p style={objectStyle}>
             {
-              cluster.map(el => Array.isArray(el) ? `(${el.join(',')})` : el).join(', ')
+              cluster.map(el => Array.isArray(el) ? `(${el.join(',')})` : el).sort().join(', ')
             }
           </p>
         </div>
