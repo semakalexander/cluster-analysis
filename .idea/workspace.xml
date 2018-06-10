@@ -2,12 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f7c41e06-50a8-4293-a76b-b0c4d12f3b52" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/index.css" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/index.js" afterPath="$PROJECT_DIR$/src/index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/style/App.css" afterPath="$PROJECT_DIR$/src/style/App.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/utilities/common.js" afterPath="$PROJECT_DIR$/src/utilities/common.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/utilities/kmeans.js" afterPath="$PROJECT_DIR$/src/utilities/kmeans.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -68,8 +64,8 @@
       <file leaf-file-name="App.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/App.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-630">
-              <caret line="16" column="18" lean-forward="true" selection-start-line="16" selection-start-column="18" selection-end-line="16" selection-end-column="18" />
+            <state relative-caret-position="272">
+              <caret line="67" column="0" lean-forward="true" selection-start-line="67" selection-start-column="0" selection-end-line="67" selection-end-column="0" />
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
                 <marker date="1528476258996" expanded="true" signature="833:1782" ph="..." />
@@ -105,16 +101,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-2194">
               <caret line="1" column="22" lean-forward="false" selection-start-line="1" selection-start-column="22" selection-end-line="1" selection-end-column="22" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="App.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/style/App.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1476">
-              <caret line="82" column="0" lean-forward="true" selection-start-line="82" selection-start-column="0" selection-end-line="82" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -180,7 +166,7 @@
     </option>
     <push-targets>
       <push-target-info target-remote="heroku" target-branch="master" repo="$PROJECT_DIR$" source="master" />
-      <push-target-info target-remote="heroku" target-branch="master" repo="$PROJECT_DIR$" source="develop" />
+      <push-target-info target-remote="origin" target-branch="master" repo="$PROJECT_DIR$" source="develop" />
     </push-targets>
   </component>
   <component name="IdeDocumentHistory">
@@ -214,6 +200,7 @@
         <option value="$PROJECT_DIR$/src/utilities/common.js" />
         <option value="$PROJECT_DIR$/src/utilities/kmeans.js" />
         <option value="$PROJECT_DIR$/src/style/App.css" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -370,7 +357,7 @@
       <workItem from="1528356634210" duration="18968000" />
       <workItem from="1528444873509" duration="9540000" />
       <workItem from="1528524636693" duration="9717000" />
-      <workItem from="1528614534657" duration="2606000" />
+      <workItem from="1528614534657" duration="3342000" />
     </task>
     <task id="LOCAL-00001" summary="init commit">
       <created>1518339563955</created>
@@ -547,11 +534,18 @@
       <option name="project" value="LOCAL" />
       <updated>1528580403157</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="cleaned">
+      <created>1528624637219</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1528624637219</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="116019000" />
+    <option name="totallyTimeSpent" value="116755000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1920" y="459" width="1366" height="741" extended-state="6" />
@@ -610,7 +604,8 @@
     <MESSAGE value="i don't even know what i did, sorry. want to sleep" />
     <MESSAGE value="fixed bug with bad choosing random centroids, small changes" />
     <MESSAGE value="fixed upload cancel bug and added sorting results" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed upload cancel bug and added sorting results" />
+    <MESSAGE value="cleaned" />
+    <option name="LAST_COMMIT_MESSAGE" value="cleaned" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -619,13 +614,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/helpers/colors.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="61" lean-forward="false" selection-start-line="0" selection-start-column="55" selection-end-line="0" selection-end-column="61" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/style/App.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="882">
@@ -990,10 +978,21 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="108">
+            <caret line="6" column="40" lean-forward="false" selection-start-line="6" selection-start-column="40" selection-end-line="6" selection-end-column="40" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/App.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-630">
-          <caret line="16" column="18" lean-forward="true" selection-start-line="16" selection-start-column="18" selection-end-line="16" selection-end-column="18" />
+        <state relative-caret-position="272">
+          <caret line="67" column="0" lean-forward="true" selection-start-line="67" selection-start-column="0" selection-end-line="67" selection-end-column="0" />
           <folding>
             <element signature="e#0#41#0" expanded="true" />
             <marker date="1528476258996" expanded="true" signature="833:1782" ph="..." />
