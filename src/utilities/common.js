@@ -22,9 +22,6 @@ const deserialize = data => data.map(({ x, y }) => ([x, y]));
 
 const isSerialized = data => data.every(el => isExist(el.x));
 
-let id = 0;
-const newId = (prefix = '') => `${prefix}-${id++}`;
-
 const generateData = (dim = 2, length = 50, min = -100, max = 100) => {
   const data = [];
 
@@ -59,7 +56,7 @@ const parseCSV = (csv, separator = ',') => {
     }
   }
   catch(err) {
-    console.err('something get wrong in paring csv', err);
+    console.err('something get wrong in parsing csv', err);
     return {
       headers: '',
       data: []
@@ -96,7 +93,6 @@ export {
   shuffle,
   toJson,
   flat,
-  newId,
   serialize,
   deserialize,
   isSerialized,

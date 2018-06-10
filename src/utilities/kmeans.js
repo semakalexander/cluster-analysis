@@ -2,7 +2,6 @@ import distances from './distances';
 import { isString } from './common';
 import { toJson, randomCentroids } from './common';
 
-
 const fillCentroids = (data, centroidsIndexes) =>
   centroidsIndexes.reduce((arr, index) => [...arr, data[index]], []);
 

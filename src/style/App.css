@@ -1,7 +1,6 @@
 @import "../../node_modules/react-vis/dist/style.css";
 
 body {
-  /*background-color: #151515;*/
   font-family: monospace;
 }
 
@@ -82,7 +81,6 @@ body {
   transform: translateY(1px);
 }
 
-
 .number-inputs {
   display: flex;
   margin-top: 6px;
@@ -101,13 +99,10 @@ body {
 
 .number-input-wrapper {
   text-align: center;
-  /*color: #eee;*/
-  /*font-size: 16px;*/
 }
 
 
 .points-counter {
-    /*color: white;*/
     position: absolute;
     left: 60px;
     top: 530px;
@@ -123,19 +118,3 @@ body {
 .disabled-tab{
   background: #ddd;
 }
-
-
-/*table {*/
-  /*border-collapse: collapse;*/
-  /*width: 100%;*/
-/*}*/
-
-/*th, td {*/
-  /*text-align: center;*/
-  /*padding: 8px;*/
-/*}*/
-
-/*th {*/
-  /*background-color: #4CAF50;*/
-  /*color: white;*/
-/*}*/
